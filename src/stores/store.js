@@ -1,13 +1,18 @@
 import Reflux from 'reflux';
 import ipc from 'hadron-ipc';
 import StateMixin from 'reflux-state-mixin';
-import { stream as schemaStream } from 'mongodb-schema';
 import StatusSubview from 'components/status-subview';
+import Analyser from 'modules/analyser';
 import toNS from 'mongodb-ns';
 import get from 'lodash.get';
 import has from 'lodash.has';
 import debounce from 'lodash.debounce';
 import { addLayer, generateGeoQuery } from 'modules/geo';
+
+let schemaModule;
+import('@mongodb-rust/wasm-schema-parser').
+  then(module => { schemaModule = module; }).
+  catch(e => console.error('Cannot load @mongodb-rust/wasm-schema-parser', e));
 
 const debug = require('debug')('mongodb-compass:stores:schema');
 
@@ -209,7 +214,8 @@ const configureStore = (options = {}) => {
         query: this.query.filter,
         size: this.query.limit === 0 ? DEFAULT_SAMPLE_SIZE : Math.min(MAX_NUM_DOCUMENTS, this.query.limit),
         fields: this.query.project,
-        promoteValues: PROMOTE_VALUES
+        promoteValues: PROMOTE_VALUES,
+        raw: true
       };
       debug('sampleOptions', sampleOptions);
 
@@ -230,8 +236,6 @@ const configureStore = (options = {}) => {
       });
 
       this.samplingStream = this.dataService.sample(this.ns, sampleOptions);
-      this.analyzingStream = schemaStream();
-      let schema;
 
       const onError = (err) => {
         debug('onError', err);
@@ -288,16 +292,17 @@ const configureStore = (options = {}) => {
         });
         const numSamples = Math.min(count, sampleOptions.size);
         let sampleCount = 0;
+        const schemaParser = new schemaModule.SchemaParser();
 
         this.samplingStream
-          .pipe(this.analyzingStream)
-          .once('progress', () => {
+          .pipe(new Analyser(schemaParser))
+          .once('data', () => {
             this.setState({
               samplingState: 'analyzing',
               samplingTimeMS: new Date() - samplingStart
             });
           })
-          .on('progress', () => {
+          .on('data', () => {
             sampleCount ++;
             debounce(() => {
               const newProgress = Math.ceil(sampleCount / numSamples * 100);
@@ -310,15 +315,13 @@ const configureStore = (options = {}) => {
               }
             }, 250);
           })
-          .on('data', (data) => {
-            schema = data;
-          })
           .on('error', (analysisErr) => {
             onError(analysisErr);
           })
           .on('end', () => {
             if ((numSamples === 0 || sampleCount > 0) && this.state.samplingState !== 'error') {
-              onSuccess(schema);
+              // @todo: Durran: not getting here yet.
+              onSuccess(JSON.parse(schemaParser.toJson()));
             }
             this.stopSampling();
           });

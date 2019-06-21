@@ -154,6 +154,7 @@
     "webpack-sources": "^1.0.1"
   },
   "dependencies": {
+    "@mongodb-rust/wasm-schema-parser": "^0.2.0",
     "detect-coordinates": "^0.2.0",
     "leaflet": "^1.5.1",
     "leaflet-draw": "^1.0.4",
