@@ -14,9 +14,14 @@ const SELECTED_COLOR = '#F68A1E';
 const UNSELECTED_COLOR = '#43B1E5';
 const CONTROL_COLOR = '#ed271c';
 
-const MAPBOX_API_URL = 'https://compass-maps.mongodb.com/api.mapbox.com';
+const API_URL = 'https://compass-maps.mongodb.com/compass/maptile'
+// If no tile server is provided, use this url instead.
+const DEFAULT_TILE_URL = API_URL + '/{z}/{x}/{y}';
 
-mapboxgl.config.API_URL = MAPBOX_API_URL;
+// The copyright url for HERE maps, if we're using the default tile url
+const COPYRIGHT_URL = 'https://compass-maps.mongodb.com/compass/copyright';
+
+mapboxgl.config.API_URL = API_URL;
 
 const minicharts_d3fns_geo = (localAppRegistry) => {
   // --- beginning chart setup ---
