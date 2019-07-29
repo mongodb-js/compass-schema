@@ -13,11 +13,9 @@ import mapboxgl from 'mapbox-gl/dist/mapbox-gl.js';
 const SELECTED_COLOR = '#F68A1E';
 const UNSELECTED_COLOR = '#43B1E5';
 const CONTROL_COLOR = '#ed271c';
-const TOKEN = 'pk.eyJ1IjoibW9uZ29kYi1jb21wYXNzIiwiYSI6ImNpbWUxZjNudjAwZTZ0emtrczByanZ4MzIifQ.6Mha4zoflraopcZKOLSpYQ';
 
 const MAPBOX_API_URL = 'https://compass-maps.mongodb.com/api.mapbox.com';
 
-mapboxgl.accessToken = TOKEN;
 mapboxgl.config.API_URL = MAPBOX_API_URL;
 
 const minicharts_d3fns_geo = (localAppRegistry) => {
