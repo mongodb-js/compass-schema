@@ -58,15 +58,16 @@ const store = configureStore({
 });
 
 const connection = new Connection({
-  hostname: '127.0.0.1',
+  hostname: 'localhost',
   port: 27017,
-  ns: 'admin'
+  ns: 'ships',
 });
+
 const dataService = new DataService(connection);
 
 dataService.connect((error, ds) => {
   setDataProvider(store, error, ds);
-  setNamespace(store, 'echo.asdfadsfadsfsdfas');
+  setNamespace(store, 'ships.shipwrecks');
 });
 
 // Create a HMR enabled render function
