@@ -56,12 +56,9 @@ const minicharts_d3fns_geo = (localAppRegistry) => {
     let project;
     let unproject;
 
-    // const project = d3.geo.mercator();
-    // const unproject = d3.geo.mercator().invert;
-
     let update = null;
 
-    function querybuilder() {
+    function dispatchQueryActions() {
       const QueryAction = localAppRegistry.getAction('Query.Actions');
 
       if (circleCenter && circleOuter) {
@@ -105,7 +102,7 @@ const minicharts_d3fns_geo = (localAppRegistry) => {
             circleOuter.lng -= dlng;
           }
           update();
-          querybuilder();
+          dispatchQueryActions();
         } else {
           return;
         }
@@ -114,7 +111,7 @@ const minicharts_d3fns_geo = (localAppRegistry) => {
         // kind of a dirty hack...
         setTimeout(function() {
           dragging = false;
-          querybuilder();
+          dispatchQueryActions();
         }, 100);
       });
 
@@ -127,7 +124,7 @@ const minicharts_d3fns_geo = (localAppRegistry) => {
       container.selectAll('line.lasso').remove();
       dispatch.clear();
       if (!dontUpdate) {
-        querybuilder();
+        dispatchQueryActions();
       }
       return;
     }
@@ -238,7 +235,7 @@ const minicharts_d3fns_geo = (localAppRegistry) => {
       const ll = unproject([p[0], p[1]]);
       circleOuter = ll;
       update();
-      querybuilder();
+      dispatchQueryActions();
     });
 
     container.on('mouseup.circle', function() {
@@ -254,7 +251,7 @@ const minicharts_d3fns_geo = (localAppRegistry) => {
         if (!circleSelected) {
           circleOuter = ll;
           circleSelected = true;
-          querybuilder();
+          dispatchQueryActions();
         }
       }
     });
