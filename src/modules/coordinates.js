@@ -14,13 +14,14 @@ const SELECTED_COLOR = '#F68A1E';
 const UNSELECTED_COLOR = '#43B1E5';
 const CONTROL_COLOR = '#ed271c';
 
-const API_URL = 'https://compass-maps.mongodb.com/compass/maptile'
+const API_URL = 'https://compass-maps.mongodb.com/compass/maptile';
 // If no tile server is provided, use this url instead.
-const DEFAULT_TILE_URL = API_URL + '/{z}/{x}/{y}';
+// const DEFAULT_TILE_URL = API_URL + '/{z}/{x}/{y}';
 
 // The copyright url for HERE maps, if we're using the default tile url
-const COPYRIGHT_URL = 'https://compass-maps.mongodb.com/compass/copyright';
+// const COPYRIGHT_URL = 'https://compass-maps.mongodb.com/compass/copyright';
 
+mapboxgl.config.ACCESS_TOKEN = '12345';
 mapboxgl.config.API_URL = API_URL;
 
 const minicharts_d3fns_geo = (localAppRegistry) => {
@@ -353,7 +354,7 @@ const minicharts_d3fns_geo = (localAppRegistry) => {
           container: innerDiv[0][0],
           // not allowed to whitelabel the map ever due to OpenStreetMaps license.
           // attributionControl: false,
-          style: 'mapbox://styles/mapbox/light-v9',
+          style: 'mapbox://openmaptiles.4qljc88t',
           center: bounds.getCenter()
         });
         map.dragPan.enable();
