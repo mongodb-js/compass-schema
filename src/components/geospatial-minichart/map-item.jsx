@@ -109,6 +109,7 @@ class MapItem extends PureComponent {
   // static contextType = AppContext;
 
   renderMapItem() {
+    /* eslint-disable no-unused-vars */
     const {
       _id,
       chartType,
