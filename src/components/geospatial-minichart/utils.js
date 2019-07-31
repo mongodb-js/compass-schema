@@ -1,6 +1,9 @@
+/* eslint-disable prefer-const */
 import L from 'leaflet';
 
 import { COPYRIGHT_URL } from './constants';
+
+let fetch = require('node-fetch');
 
 /**
  * Fetches attribution objects from the attribution endpoint (currently the raw API).
@@ -28,7 +31,7 @@ function cachedGetHereTileBoxes() {
   };
 }
 
-const getHereTileBoxes = cachedGetHereTileBoxes();
+let getHereTileBoxes = cachedGetHereTileBoxes();
 
 const getHereAttributionMessage = async function(bounds, level) {
   const tileBoxes = await getHereTileBoxes();

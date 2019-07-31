@@ -4,7 +4,6 @@ import { shallow, mount } from 'enzyme';
 import { forEach } from 'lodash';
 import { CircleMarker } from 'react-leaflet';
 import L from 'leaflet';
-import { GeoheatMapItem } from './geospatial-item';
 import { DEFAULT_TILE_URL } from './constants';
 
 import MapItem from './map-item';
@@ -329,29 +328,30 @@ describe('<MapItem />', function() {
       expect(map.props().viewport).to.equal(undefined);
     });
 
-    it("updating opacity should change a heatmap's opacity", function() {
-      const spec = {
-        ...SPEC,
-        opacity: 1,
-        gradient: {},
-      };
+    // TODO: lucas: not using heatmaps etc in compass for now.
+    // it("updating opacity should change a heatmap's opacity", function() {
+    //   const spec = {
+    //     ...SPEC,
+    //     opacity: 1,
+    //     gradient: {},
+    //   };
 
-      const wrapper = shallow(
-        <MapItem data={DATA} spec={spec} chartType={'Geospatial Heatmap'} />
-      );
+    //   const wrapper = shallow(
+    //     <MapItem data={DATA} spec={spec} chartType={'Geospatial Heatmap'} />
+    //   );
 
-      const newSpec = {
-        ...SPEC,
-        opacity: 0.5,
-        gradient: {},
-      };
+    //   const newSpec = {
+    //     ...SPEC,
+    //     opacity: 0.5,
+    //     gradient: {},
+    //   };
 
-      wrapper.setState({ ready: true });
+    //   wrapper.setState({ ready: true });
 
-      wrapper.setProps({ spec: newSpec });
-      const heatmap = wrapper.find(GeoheatMapItem);
-      expect(heatmap.props().opacity).to.deep.equal(newSpec.opacity);
-    });
+    //   wrapper.setProps({ spec: newSpec });
+    //   const heatmap = wrapper.find(GeoheatMapItem);
+    //   expect(heatmap.props().opacity).to.deep.equal(newSpec.opacity);
+    // });
 
     it('doesnt set Map bounds when only one document given', function() {
       const map = component.find('Map');
