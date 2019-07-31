@@ -175,15 +175,11 @@
     "lodash.sortby": "^4.7.0",
     "lodash.sortbyorder": "^3.4.4",
     "lodash.sum": "^4.0.2",
-    "mapbox-gl": "^0.29.0",
     "mongodb-query-util": "0.0.2",
     "mongodb-redux-common": "0.0.1",
     "mongodb-schema": "^8.2.4",
     "mongodb-schema-parser": "^0.1.5",
     "pluralize": "^8.0.0",
-    "react-leaflet": "^2.4.0",
-    "turf-destination": "^1.2.1",
-    "turf-distance": "^1.1.0",
-    "turf-point": "^2.0.1"
+    "react-leaflet": "^2.4.0"
   }
 }
