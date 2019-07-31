@@ -152,6 +152,7 @@
   },
   "dependencies": {
     "detect-coordinates": "^0.2.0",
+    "leaflet": "^1.5.1",
     "lodash.assign": "^4.2.0",
     "lodash.defaults": "^4.2.0",
     "lodash.defer": "^4.1.0",
