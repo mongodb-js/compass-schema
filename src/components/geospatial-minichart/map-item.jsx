@@ -1,3 +1,8 @@
+/**
+ * NOTE: (lucas) for why `AppContext` related stubbing and
+ * test cases are commented out, please see:
+ * https://github.com/10gen/compass-schema/pull/2
+ */
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { find, isArray, isNumber } from 'lodash';
@@ -5,8 +10,6 @@ import { Map, TileLayer } from 'react-leaflet';
 
 import GeoscatterMapItem from './geoscatter-map-item';
 
-// TODO: lucas
-// import { AppContext } from 'constants/contexts';
 import { DEFAULT_TILE_URL } from './constants';
 import { MAP_ROLES, GeoSpatialScatterRole } from './map-types';
 
@@ -84,7 +87,10 @@ class MapItem extends PureComponent {
 
   // eslint-disable-next-line space-before-function-paren
   getTileAttribution = async () => {
-    const { tileServer, tileAttributionMessage } = this.context;
+    // const { tileServer, tileAttributionMessage } = this.context;
+    const tileServer = null;
+    const tileAttributionMessage = null;
+
     const { map } = this.refs;
 
     let attributionMessage = tileAttributionMessage;
@@ -105,8 +111,9 @@ class MapItem extends PureComponent {
     }
   }
 
-  // TODO: lucas
-  // static contextType = AppContext;
+  /**
+   * static contextType = AppContext;
+   */
 
   renderMapItem() {
     /* eslint-disable no-unused-vars */
@@ -130,7 +137,6 @@ class MapItem extends PureComponent {
   }
 
   render() {
-    const { tileServer } = this.context;
     const { attributionMessage } = this.state;
     const { spec } = this.props;
 
@@ -147,7 +153,7 @@ class MapItem extends PureComponent {
       >
         {this.renderMapItem()}
         <TileLayer
-          url={tileServer || DEFAULT_TILE_URL}
+          url={DEFAULT_TILE_URL}
           attribution={attributionMessage}
         />
       </Map>

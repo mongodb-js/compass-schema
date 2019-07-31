@@ -1,3 +1,8 @@
+/**
+ * NOTE: (lucas) for why `AppContext` related stubbing and
+ * test cases are commented out, please see:
+ * https://github.com/10gen/compass-schema/pull/2
+ */
 import React, { forwardRef, Component } from 'react';
 import PropTypes from 'prop-types';
 import { shallow, mount } from 'enzyme';
@@ -117,18 +122,18 @@ describe('<MapItem />', function() {
     context('leaflet hooks & special props', function() {
       let MockedMapItem;
       beforeEach(function() {
-        const context = {
-          tileServer: '',
-          tileAttributionMessage: '',
-        };
+        // const context = {
+        //   tileServer: '',
+        //   tileAttributionMessage: '',
+        // };
         // eslint-disable-next-line new-cap
         MockedMapItem = MapItemInjector({
-          'utils/map': {
+          './utils': {
             getHereAttributionMessage: getHereAttributionMessageStub,
           },
-          'constants/contexts': {
-            AppContext: React.createContext(context),
-          },
+          // 'constants/contexts': {
+          //   AppContext: React.createContext(context),
+          // },
           'react-leaflet': {
             Map: MockMap,
             // eslint-disable-next-line react/no-multi-comp
@@ -196,7 +201,7 @@ describe('<MapItem />', function() {
           });
         });
 
-        context('with a defined AppContext', function() {
+        context.skip('with a defined AppContext', function() {
           beforeEach(function() {
             const context = {
               tileServer: 'http://example.com/{z}/{x}/{y}',
@@ -205,7 +210,7 @@ describe('<MapItem />', function() {
 
             // eslint-disable-next-line new-cap
             const MockedContextMapItem = MapItemInjector({
-              'utils/map': {
+              './map': {
                 getHereAttributionMessage: getHereAttributionMessageStub,
               },
               'constants/contexts': {
@@ -259,21 +264,21 @@ describe('<MapItem />', function() {
           });
         });
 
-        context('with a defined AppContext', function() {
+        context.skip('with a defined AppContext', function() {
           beforeEach(function() {
-            const context = {
-              tileServer: 'http://example.com/{z}/{x}/{y}',
-              tileAttributionMessage: 'Manual Message',
-            };
+            // const context = {
+            //   tileServer: 'http://example.com/{z}/{x}/{y}',
+            //   tileAttributionMessage: 'Manual Message',
+            // };
 
             // eslint-disable-next-line new-cap
             const MockedContextMapItem = MapItemInjector({
-              'utils/map': {
+              './utils': {
                 getHereAttributionMessage: getHereAttributionMessageStub,
               },
-              'constants/contexts': {
-                AppContext: React.createContext(context),
-              },
+              // 'constants/contexts': {
+              //   AppContext: React.createContext(context),
+              // },
               'react-leaflet': {
                 Map: MockMap,
                 // eslint-disable-next-line react/no-multi-comp

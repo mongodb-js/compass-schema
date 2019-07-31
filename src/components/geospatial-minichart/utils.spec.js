@@ -4,6 +4,7 @@ import { getHereAttributionMessage, getHereTileBoxes } from './utils';
 
 describe.skip('TODO: lucas: come back to this. getHereTileBoxes', function() {
   before(function() {
+    // eslint-disable-next-line no-unused-vars
     const fetchResourceStub = sinon.stub().resolves({
       json: () => ({
         abnormal: [{}, {}],
