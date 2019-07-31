@@ -5,11 +5,12 @@ import { Map, TileLayer } from 'react-leaflet';
 
 import GeoscatterMapItem from './geoscatter-map-item';
 
-import { AppContext } from 'constants/contexts';
+// TODO: lucas
+// import { AppContext } from 'constants/contexts';
 import { DEFAULT_TILE_URL } from './constants';
 import { MAP_ROLES, GeoSpatialScatterRole } from './map-types';
 
-import { getHereAttributionMessage } from 'utils';
+import { getHereAttributionMessage } from './utils';
 
 class MapItem extends PureComponent {
   static propTypes = {
@@ -104,7 +105,8 @@ class MapItem extends PureComponent {
     }
   }
 
-  static contextType = AppContext;
+  // TODO: lucas
+  // static contextType = AppContext;
 
   renderMapItem() {
     const {

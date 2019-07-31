@@ -1,0 +1,28 @@
+
+@popup-border-radius: 3px;
+@popup-background-color: rgba(255, 255, 255, 0.95);
+
+@import (reference) '~less/compass/_theme';
+
+.popup {
+  pointer-events: none;
+}
+
+// Override leaflet popup styles
+:global(.leaflet-popup-content-wrapper) {
+  background-color: @popup-background-color !important;
+  border-radius: @popup-border-radius !important;
+}
+
+.line {
+  display: block;
+}
+
+.key {
+  text-transform: capitalize;
+  color: @gray3;
+}
+
+.value {
+  font-weight: 500;
+}

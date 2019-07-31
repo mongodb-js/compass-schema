@@ -1,6 +1,6 @@
 import { get } from 'lodash';
 
-import { SCATTER_DEFAULTS, CHART_COLORS, CHART_CATEGORIES } from 'constants/geospatial';
+import { SCATTER_DEFAULTS, CHART_COLORS, CHART_CATEGORIES } from './constants';
 
 const GeoSpatialScatterRole = {
   name: 'Geospatial Scatter',
