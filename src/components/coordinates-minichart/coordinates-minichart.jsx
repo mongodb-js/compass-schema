@@ -4,6 +4,8 @@
 import React, { PureComponent } from "react";
 import PropTypes from "prop-types";
 
+import L from 'leaflet';
+
 import { Map, TileLayer } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
@@ -103,7 +105,9 @@ class CoordinatesMinichart extends PureComponent {
 
   state = {
     ready: false,
-    attributionMessage: ""
+    attributionMessage: "",
+    zoom: 5,
+    center: [0, 0]
   };
 
   componentDidMount() {
@@ -145,7 +149,17 @@ class CoordinatesMinichart extends PureComponent {
      * Need at least 2 points for map level bounds.
      */
     if (bounds.length === 1) {
-      leaflet.setView(bounds[0], 3); // zoom ~continent level
+      const point = L.point.apply(null, bounds[0]);
+      const zoom = this.state.zoom || 10;
+      // leaflet.panTo(bounds[0], zoom);
+
+      leaflet.setView(bounds[0], zoom);
+
+      // leaflet.setZoomAround(point, leaflet.getZoom());
+      // leaflet.setView(bounds[0], 3); // zoom ~continent level
+      // TODO: lucas - animate to the only result maintaining
+      // current zoom.
+      // leaflet.flyTo(bounds[0]);
       return;
     }
 
@@ -187,6 +201,24 @@ class CoordinatesMinichart extends PureComponent {
     map.leafletElement.invalidateSize();
   }
 
+  onMoveEnd(event) {
+    // const { sourceTarget, target, type } = event;
+    // if (target.getZoom() === 0) {
+    //   return;
+    // }
+
+    // // this.setState({
+    // //   zoom: target.getZoom(),
+    // //   center: target.getCenter()
+    // // });
+    // console.log('onMoveEnd', {
+    //   zoom: target.getZoom(),
+    //   center: target.getCenter(),
+    //   sourceTargetZoom: sourceTarget.getZoom(),
+    //   sourceTargetCenter: sourceTarget.getCenter()
+    // });
+  }
+
   /**
    * Render child markers for each value in the schema.
    * TODO: lucas - if !unique, included # of docs in the
@@ -221,7 +253,7 @@ class CoordinatesMinichart extends PureComponent {
       <Map
         whenReady={this.whenMapReady.bind(this)}
         ref="map"
-        onMoveend={this.getTileAttribution.bind(this)}
+        onMoveend={this.onMoveEnd.bind(this)}
       >
         {this.renderMapItems()}
         <TileLayer url={DEFAULT_TILE_URL} attribution={attributionMessage} />
