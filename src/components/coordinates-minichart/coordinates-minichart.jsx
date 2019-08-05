@@ -1,20 +1,20 @@
 /* eslint-disable react/sort-comp */
 /* eslint-disable quotes */
 
-import React, { PureComponent } from "react";
-import PropTypes from "prop-types";
+import React, { PureComponent } from 'react';
+import PropTypes from 'prop-types';
 
 import L from 'leaflet';
 
-import { Map, TileLayer } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
-import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
-import "leaflet-defaulticon-compatibility";
+import { Map, TileLayer } from 'react-leaflet';
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
+import 'leaflet-defaulticon-compatibility';
 
-import GeoscatterMapItem from "./marker";
+import GeoscatterMapItem from './marker';
 
-import { DEFAULT_TILE_URL } from "./constants";
-import { getHereAttributionMessage } from "./utils";
+import { DEFAULT_TILE_URL } from './constants';
+import { getHereAttributionMessage } from './utils';
 
 // const SELECTED_COLOR = '#F68A1E';
 const UNSELECTED_COLOR = '#43B1E5';
@@ -27,7 +27,7 @@ const UNSELECTED_COLOR = '#43B1E5';
  * @param {react-leaflet.Map} map The rendered component ref.
  */
 const attachAttribution = async function(map) {
-  let attributionMessage = "";
+  let attributionMessage = '';
   if (map) {
     const bounds = map.leafletElement.getBounds();
     const level = map.leafletElement.getZoom();
@@ -42,8 +42,8 @@ const attachAttribution = async function(map) {
  * @param {Array<bson.Double>} values
  * @returns {Array<Number>}
  */
-const bsonToLatLong = (values) => {
-  return values.map((v) => v.valueOf());
+const bsonToLatLong = values => {
+  return values.map(v => v.valueOf());
 };
 
 /**
@@ -54,7 +54,7 @@ const bsonToLatLong = (values) => {
 const valueToGeoPoint = values => {
   const latLong = bsonToLatLong(values);
   const point = {
-    type: "Point",
+    type: 'Point',
     coordinates: latLong,
     center: latLong,
     color: UNSELECTED_COLOR,
@@ -63,7 +63,7 @@ const valueToGeoPoint = values => {
      */
     fields: [
       {
-        key: "Location",
+        key: 'Location',
         value: latLong.toString()
       }
     ]
@@ -73,7 +73,7 @@ const valueToGeoPoint = values => {
 
 /**
  * Example `type` prop:
- * 
+ *
  * ```
  * {
  *   name: 'Boolean',
@@ -85,7 +85,7 @@ const valueToGeoPoint = values => {
  * ```
  */
 
- // From charts geospatial map-item
+// From charts geospatial map-item
 
 class CoordinatesMinichart extends PureComponent {
   static displayName = 'CoorddinatesMinichart';
@@ -105,7 +105,7 @@ class CoordinatesMinichart extends PureComponent {
 
   state = {
     ready: false,
-    attributionMessage: "",
+    attributionMessage: '',
     zoom: 5,
     center: [0, 0]
   };
@@ -181,10 +181,10 @@ class CoordinatesMinichart extends PureComponent {
   }
 
   async getTileAttribution() {
-    if (this.state.attributionMessage !== "") {
+    if (this.state.attributionMessage !== '') {
       return;
     }
-    
+
     const { map } = this.refs;
     const attributionMessage = await attachAttribution(map);
     this.setState({ attributionMessage });
@@ -206,7 +206,6 @@ class CoordinatesMinichart extends PureComponent {
     // if (target.getZoom() === 0) {
     //   return;
     // }
-
     // // this.setState({
     // //   zoom: target.getZoom(),
     // //   center: target.getCenter()
