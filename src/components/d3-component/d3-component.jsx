@@ -105,12 +105,12 @@ class D3Component extends Component {
       fieldName: this.props.fieldName,
       unique: this.props.type.unique,
       query: this.props.query,
-      promoter: TO_BSON_CONVERSIONS[this.props.type.bsontype] || DEFAULT
+      promoter: TO_BSON_CONVERSIONS[this.props.type.bsonType] || DEFAULT
     });
 
-    if (TO_JS_CONVERSIONS.hasOwnProperty(this.props.type.bsontype)) {
+    if (TO_JS_CONVERSIONS.hasOwnProperty(this.props.type.bsonType)) {
       d3.select(el)
-        .datum(TO_JS_CONVERSIONS[this.props.type.bsontype](this.props.type.values))
+        .datum(TO_JS_CONVERSIONS[this.props.type.bsonType](this.props.type.values))
         .call(this.state.chart);
     } else {
       d3.select(el)
