@@ -11,14 +11,8 @@ const debug = require('debug')('mongodb-compass:stores:schema');
 const COMPASS_ICON_PATH = ''; // require('../../../../icon').path;
 const DEFAULT_MAX_TIME_MS = 10000;
 
-
-////// HACK
-/////// REMOVE ME
-const MAX_NUM_DOCUMENTS = 1;
-const DEFAULT_SAMPLE_SIZE = 1;
-
-// const MAX_NUM_DOCUMENTS = 1000;
-// const DEFAULT_SAMPLE_SIZE = 1000;
+const MAX_NUM_DOCUMENTS = 1000;
+const DEFAULT_SAMPLE_SIZE = 1000;
 
 const PROMOTE_VALUES = false;
 const DEFAULT_QUERY = {
@@ -273,14 +267,10 @@ const configureStore = (options = {}) => {
         maxTimeMS: this.state.maxTimeMS
       };
 
-      this.dataService.count(this.ns, this.query.filter, countOptions, (err, _count) => {
+      this.dataService.count(this.ns, this.query.filter, countOptions, (err, count) => {
         if (err) {
           return onError(err);
         }
-
-        ////// HACK
-        /////// REMOVE ME
-        const count = 1;
 
         this.setState({
           count: count,
