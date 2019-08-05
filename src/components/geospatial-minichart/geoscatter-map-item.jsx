@@ -6,8 +6,8 @@ import CustomPopup from './custom-popup';
 
 const DEFAULT_STYLES = {
   weight: 1,
-  radius: 10,
-  fillOpacity: 0.2,
+  radius: 5,
+  fillOpacity: 0.6,
 };
 
 // Give a popup to a react-leaflet marker component
