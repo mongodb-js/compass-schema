@@ -9,7 +9,7 @@ import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css"; // Re-uses images from ~leaflet package
 import "leaflet-defaulticon-compatibility";
 
-import GeoscatterMapItem from "./geoscatter-map-item";
+import GeoscatterMapItem from "./marker";
 
 import { DEFAULT_TILE_URL } from "./constants";
 import { getHereAttributionMessage } from "./utils";
@@ -107,13 +107,7 @@ class CoordinatesMinichart extends PureComponent {
   };
 
   componentDidMount() {
-    const { map } = this.refs;
-    if (!map) {
-      return;
-    }
-
-    const bounds = this.getLatLongPairs();
-    map.leafletElement.fitBounds(bounds);
+    this.fitMapBounds();
   }
 
   /**
@@ -126,12 +120,40 @@ class CoordinatesMinichart extends PureComponent {
     return this.props.type.values.map(bsonToLatLong);
   }
 
-  componentDidUpdate() {
-    const leaflet = this.refs.map.leafletElement;
+  /**
+   * Sets a map view that contains the given geographical bounds
+   * with the maximum zoom level possible.
+   */
+  fitMapBounds() {
+    const { map } = this.refs;
+    if (!map) {
+      return;
+    }
 
-    // Sets a map view that contains the given geographical bounds
-    // with the maximum zoom level possible.
-    leaflet.fitBounds(this.getLatLongPairs());
+    const leaflet = this.refs.map.leafletElement;
+    const bounds = this.getLatLongPairs();
+
+    /**
+     * If no values (e.g. empty query result),
+     * don't draw the map?
+     */
+    if (bounds.length === 0) {
+      return;
+    }
+
+    /**
+     * Need at least 2 points for map level bounds.
+     */
+    if (bounds.length === 1) {
+      leaflet.setView(bounds[0], 3); // zoom ~continent level
+      return;
+    }
+
+    leaflet.fitBounds(bounds);
+  }
+
+  componentDidUpdate() {
+    this.fitMapBounds();
     this.invalidateMapSize();
   }
 
