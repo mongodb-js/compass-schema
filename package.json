@@ -111,6 +111,7 @@
     "karma-sinon": "^1.0.5",
     "karma-sourcemap-loader": "^0.3.7",
     "karma-webpack": "^4.0.0-rc.5",
+    "leaflet-defaulticon-compatibility": "^0.1.1",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "mocha": "^5.2.0",
