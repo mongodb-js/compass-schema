@@ -2,7 +2,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import { Popup } from 'react-leaflet';
 
-import { CustomPopup, CustomPopupFields } from './custom-popup';
+import { CustomPopup, CustomPopupFields } from './marker-popup';
 
 const FIELDS = [
   {

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet';
 
-import styles from './custom-popup.less';
+import styles from './marker-popup.less';
 
 const CustomPopup = ({ fields }) => {
   return (

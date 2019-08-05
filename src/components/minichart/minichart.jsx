@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import UniqueMiniChart from 'components/unique-minichart';
 import DocumentMinichart from 'components/document-minichart';
 import ArrayMinichart from 'components/array-minichart';
-import GeospatialMinichart from 'components/geospatial-minichart';
+import CoordinatesMinichart from 'components/coordinates-minichart';
 import D3Component from 'components/d3-component';
 
 import includes from 'lodash.includes';
@@ -104,7 +104,7 @@ class MiniChart extends Component {
     if (typeName === 'Coordinates') {
       const height = width / 1.618; // = golden ratio
       return (
-        <GeospatialMinichart
+        <CoordinatesMinichart
           fieldName={fieldName}
           type={this.props.type}
           query={queryValue}

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { CircleMarker } from 'react-leaflet';
 
-import CustomPopup from './custom-popup';
+import CustomPopup from './marker-popup';
 
 const DEFAULT_STYLES = {
   weight: 1,
@@ -37,16 +37,16 @@ popupComponent.propTypes = {
   fields: PropTypes.array,
 };
 
-const GeoscatterMapItem = ({ data }) =>
+const Marker = ({ data }) =>
   data.map(point => {
     point.key = `${point.center} - ${point.color}`;
 
     return popupComponent(CircleMarker, point);
   });
 
-GeoscatterMapItem.propTypes = {
+Marker.propTypes = {
   data: PropTypes.array.isRequired,
 };
 
-export default GeoscatterMapItem;
-export { GeoscatterMapItem, popupComponent };
+export default Marker;
+export { Marker, popupComponent };

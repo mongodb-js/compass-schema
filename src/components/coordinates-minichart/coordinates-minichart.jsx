@@ -83,8 +83,10 @@ const valueToGeoPoint = values => {
  * ```
  */
 
-class MapItem extends PureComponent {
-  static displayName = 'MapItemComponent';
+ // From charts geospatial map-item
+
+class CoordinatesMinichart extends PureComponent {
+  static displayName = 'CoorddinatesMinichart';
   static propTypes = {
     _id: PropTypes.string,
     type: PropTypes.shape({
@@ -206,5 +208,5 @@ class MapItem extends PureComponent {
   }
 }
 
-export default MapItem;
-export { MapItem };
+export default CoordinatesMinichart;
+export { CoordinatesMinichart };
