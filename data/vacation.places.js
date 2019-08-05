@@ -8,7 +8,7 @@ module.exports = [
   { _id: 'Coldwater Seafood', latlong: [44.1631218, -68.6590683] },
   { _id: 'Stonington Lobster Co-Op', latlong: [44.1560046, -68.6556063] },
   { _id: 'Crockett Cove Woods Preserve', latlong: [44.172655, -68.7121141] },
-  { _id: 'Barred Island Preserve', latlong: [44.172655, -68.7121141, 14] },
-  { _id: 'Lucas\' House', latlong: [44.172655, -68.7121141] },
+  { _id: 'Barred Island Preserve', latlong: [44.1564011,-68.7171572] },
+  { _id: 'Lucas\' House', latlong: [44.159235, -68.673123] },
   { _id: 'MD Joyce & Barter Lumber', latlong: [44.2003412, -68.6840132] }
 ];

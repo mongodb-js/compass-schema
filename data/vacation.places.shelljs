@@ -1,3 +1,5 @@
+db.places.save({_id: "Lucas\' House", latlong: [44.159235, -68.673123]});
+
 db.places.save({_id: "Stonington, Maine", latlong: [44.1592408, -68.6731339]});
 
 db.places.save({_id: "EL EL FRIJOLES", latlong: [44.305953, -68.671159]});
@@ -16,8 +18,6 @@ db.places.save({_id: "Stonington Lobster Co-Op", latlong: [44.1560046, -68.65560
 
 db.places.save({_id: "Crockett Cove Woods Preserve", latlong: [44.172655,-68.7121141]});
 
-db.places.save({_id: "Barred Island Preserve", latlong: [44.172655,-68.7121141,14]});
-
-db.places.save({_id: "Lucas\' House", latlong: [44.172655,-68.7121141]});
+db.places.save({_id: "Barred Island Preserve", latlong: [44.1564011,-68.7171572]});
 
 db.places.save({_id: "MD Joyce & Barter Lumber", latlong: [44.2003412,-68.6840132]});
