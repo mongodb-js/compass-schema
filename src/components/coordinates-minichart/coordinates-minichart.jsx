@@ -1,6 +1,4 @@
 /* eslint-disable react/sort-comp */
-/* eslint-disable quotes */
-
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 
@@ -17,15 +15,10 @@ import { DEFAULT_TILE_URL } from './constants';
 import { getHereAttributionMessage } from './utils';
 import debounce from 'lodash.debounce';
 
+// TODO: Disable boxZoom handler for circle lasso.
+//
 // const SELECTED_COLOR = '#F68A1E';
 const UNSELECTED_COLOR = '#43B1E5';
-// const UNSELECTED_ATTRS = {
-//   fill: UNSELECTED_COLOR,
-//   stroke: 'white',
-//   'stroke-opacity': 0.6,
-//   'stroke-width': 1
-// };
-
 // const CONTROL_COLOR = '#ed271c';
 
 /**
