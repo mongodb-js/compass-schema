@@ -15,9 +15,17 @@ import GeoscatterMapItem from './marker';
 
 import { DEFAULT_TILE_URL } from './constants';
 import { getHereAttributionMessage } from './utils';
+import debounce from 'lodash.debounce';
 
 // const SELECTED_COLOR = '#F68A1E';
 const UNSELECTED_COLOR = '#43B1E5';
+// const UNSELECTED_ATTRS = {
+//   fill: UNSELECTED_COLOR,
+//   stroke: 'white',
+//   'stroke-opacity': 0.6,
+//   'stroke-width': 1
+// };
+
 // const CONTROL_COLOR = '#ed271c';
 
 /**
@@ -38,33 +46,24 @@ const attachAttribution = async function(map) {
 };
 
 /**
- * Cast `bson.Double` or `bson.Int32` to `Number`.
- * @param {Array<bson.Double>} values
- * @returns {Array<Number>}
- */
-const bsonToLatLong = values => {
-  return values.map(v => v.valueOf());
-};
-
-/**
  * Transforms an array `[lat,long]` coordinates into a GeoJSON Point.
- * @param {Array} values
+ * @param {Array} value `[long, lat]`
  * @returns {Object}
  */
-const valueToGeoPoint = values => {
-  const latLong = bsonToLatLong(values);
+const valueToGeoPoint = value => {
+  const [ lat, long ] = [+value[0], +value[1]];
   const point = {
     type: 'Point',
-    coordinates: latLong,
-    center: latLong,
+    coordinates: [long, lat],
+    center: [long, lat],
     color: UNSELECTED_COLOR,
     /**
      * Passed to `<CustomPopup />`
      */
     fields: [
       {
-        key: 'Location',
-        value: latLong.toString()
+        key: '[longitude, latitude]',
+        value: `[${[long, lat].toString()}]`
       }
     ]
   };
@@ -105,24 +104,8 @@ class CoordinatesMinichart extends PureComponent {
 
   state = {
     ready: false,
-    attributionMessage: '',
-    zoom: 5,
-    center: [0, 0]
+    attributionMessage: ''
   };
-
-  componentDidMount() {
-    this.fitMapBounds();
-  }
-
-  /**
-   * Ensures bson `[lat, long]` pair matches leaflet types.
-   * TODO: lucas - move to state.
-   *
-   * @returns {Array<Number>}
-   */
-  getLatLongPairs() {
-    return this.props.type.values.map(bsonToLatLong);
-  }
 
   /**
    * Sets a map view that contains the given geographical bounds
@@ -133,36 +116,17 @@ class CoordinatesMinichart extends PureComponent {
     if (!map) {
       return;
     }
-
     const leaflet = this.refs.map.leafletElement;
-    const bounds = this.getLatLongPairs();
+    const { type: { values } } = this.props;
+    let bounds = L.latLngBounds();
 
-    /**
-     * If no values (e.g. empty query result),
-     * don't draw the map?
-     */
-    if (bounds.length === 0) {
-      return;
+    if (values.length === 1) {
+      bounds = L.latLng(+values[0][1], +values[0][0]).toBounds(800);
+    } else {
+      values.forEach((v) => {
+        bounds.extend(L.latLng(+v[1], +v[0]));
+      });
     }
-
-    /**
-     * Need at least 2 points for map level bounds.
-     */
-    if (bounds.length === 1) {
-      const point = L.point.apply(null, bounds[0]);
-      const zoom = this.state.zoom || 10;
-      // leaflet.panTo(bounds[0], zoom);
-
-      leaflet.setView(bounds[0], zoom);
-
-      // leaflet.setZoomAround(point, leaflet.getZoom());
-      // leaflet.setView(bounds[0], 3); // zoom ~continent level
-      // TODO: lucas - animate to the only result maintaining
-      // current zoom.
-      // leaflet.flyTo(bounds[0]);
-      return;
-    }
-
     leaflet.fitBounds(bounds);
   }
 
@@ -171,14 +135,14 @@ class CoordinatesMinichart extends PureComponent {
     this.invalidateMapSize();
   }
 
-  whenMapReady() {
+  whenMapReady = () => {
     if (this.state.ready) {
       return;
     }
 
     this.getTileAttribution();
     this.setState({ ready: true }, this.invalidateMapSize);
-  }
+  };
 
   async getTileAttribution() {
     if (this.state.attributionMessage !== '') {
@@ -201,40 +165,21 @@ class CoordinatesMinichart extends PureComponent {
     map.leafletElement.invalidateSize();
   }
 
-  onMoveEnd(event) {
-    // const { sourceTarget, target, type } = event;
-    // if (target.getZoom() === 0) {
-    //   return;
-    // }
-    // // this.setState({
-    // //   zoom: target.getZoom(),
-    // //   center: target.getCenter()
-    // // });
-    // console.log('onMoveEnd', {
-    //   zoom: target.getZoom(),
-    //   center: target.getCenter(),
-    //   sourceTargetZoom: sourceTarget.getZoom(),
-    //   sourceTargetCenter: sourceTarget.getCenter()
-    // });
-  }
+  onMoveEnd = debounce(() => {
+    this.getTileAttribution();
+  });
 
   /**
-   * Render child markers for each value in the schema.
-   * TODO: lucas - if !unique, included # of docs in the
-   * sample with this value.
+   * Render child markers for each value in this field type.
    *
    * @returns {react.Component}
    */
   renderMapItems() {
-    const { values } = this.props.type;
-
-    if (values.length === 0) {
-      return null;
-    }
+    const { type: { values }, fieldName } = this.props;
 
     const geopoints = values.map(value => {
       const v = valueToGeoPoint(value);
-      v.fields[0].key = this.props.fieldName;
+      v.fields[0].key = fieldName;
       return v;
     });
 
@@ -250,9 +195,11 @@ class CoordinatesMinichart extends PureComponent {
     const { attributionMessage } = this.state;
     return (
       <Map
-        whenReady={this.whenMapReady.bind(this)}
+        minZoom={1}
+        viewport={{center: [0, 0], zoom: 1}}
+        whenReady={this.whenMapReady}
         ref="map"
-        onMoveend={this.onMoveEnd.bind(this)}
+        onMoveend={this.onMoveEnd}
       >
         {this.renderMapItems()}
         <TileLayer url={DEFAULT_TILE_URL} attribution={attributionMessage} />

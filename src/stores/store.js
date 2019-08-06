@@ -307,7 +307,6 @@ const configureStore = (options = {}) => {
             onError(analysisErr);
           })
           .on('end', () => {
-            console.log('built schema', schema);
             if ((numSamples === 0 || sampleCount > 0) && this.state.samplingState !== 'error') {
               onSuccess(schema);
             }

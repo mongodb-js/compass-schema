@@ -60,7 +60,8 @@ const store = configureStore({
 const connection = new Connection({
   hostname: 'localhost',
   port: 27017,
-  ns: 'vacation'
+  ns: 'stonington',
+  // ns: 'ships'
 });
 
 const dataService = new DataService(connection);
@@ -68,7 +69,7 @@ const dataService = new DataService(connection);
 dataService.connect((error, ds) => {
   setDataProvider(store, error, ds);
   // setNamespace(store, 'ships.shipwrecks');
-  setNamespace(store, 'vacation.places');
+  setNamespace(store, 'stonington.places');
 });
 
 // Create a HMR enabled render function
