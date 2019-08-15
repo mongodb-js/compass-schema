@@ -20,7 +20,7 @@ class Type extends Component {
   static displayName = 'TypeComponent';
 
   static propTypes = {
-    name: PropTypes.string.isRequired,
+    bson_type: PropTypes.string.isRequired,
     types: PropTypes.array,
     activeType: PropTypes.any,
     self: PropTypes.object,
@@ -58,7 +58,7 @@ class Type extends Component {
    */
   _getArraySubTypes() {
     // only worry about subtypes if the type is Array
-    if (this.props.name !== 'Array') {
+    if (this.props.bson_type !== 'Array') {
       return null;
     }
     // only show one level of subtypes, further Arrays inside Arrays don't
@@ -105,7 +105,7 @@ class Type extends Component {
    * possibly with subtypes included for Array type.
    */
   render() {
-    const type = this.props.name.toLowerCase();
+    const type = this.props.bson_type.toLowerCase();
     let cls = `${TYPE_CLASS} schema-field-type-${type}`;
     if (this.props.activeType === this.props.self) {
       cls += ' active';
@@ -116,12 +116,12 @@ class Type extends Component {
       width: percentage
     };
     const subtypes = this._getArraySubTypes();
-    const label = <span className="schema-field-type-label">{this.props.name}</span>;
+    const label = <span className="schema-field-type-label">{this.props.bson_type}</span>;
     // show integer accuracy by default, but show one decimal point accuracy
     // when less than 1% or greater than 99% but no 0% or 100%
     const format = (this.props.probability > 0.99 && this.props.probability < 1.0)
       || (this.props.probability > 0 && this.props.probability < 0.01) ? '0.0%' : '0%';
-    const tooltipText = `${this.props.name} (${numeral(this.props.probability).format(format)})`;
+    const tooltipText = `${this.props.bson_type} (${numeral(this.props.probability).format(format)})`;
     const tooltipOptions = {
       'data-for': TOOLTIP_IDS.SCHEMA_PROBABILITY_PERCENT,
       'data-tip': tooltipText,

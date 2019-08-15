@@ -23,7 +23,7 @@ const TO_BSON_CONVERSIONS = {
   'Long': (value) => bson.Long.fromNumber(value),
   'Decimal128': (value) => bson.Decimal128.fromString(value),
   'Date': (value) => new Date(value),
-  'ObjectID': (value) => bson.ObjectId.createFromHexString(value)
+  'ObjectId': (value) => bson.ObjectId.createFromHexString(value)
 };
 
 /**
@@ -103,14 +103,14 @@ class D3Component extends Component {
     // @todo: Durran add the original type here.
     this.state.chart.options({
       fieldName: this.props.fieldName,
-      unique: this.props.type.unique,
+      unique: this.props.type.unique || 0,
       query: this.props.query,
-      promoter: TO_BSON_CONVERSIONS[this.props.type.bsonType] || DEFAULT
+      promoter: TO_BSON_CONVERSIONS[this.props.type.bson_type] || DEFAULT
     });
 
-    if (TO_JS_CONVERSIONS.hasOwnProperty(this.props.type.bsonType)) {
+    if (TO_JS_CONVERSIONS.hasOwnProperty(this.props.type.bson_type)) {
       d3.select(el)
-        .datum(TO_JS_CONVERSIONS[this.props.type.bsonType](this.props.type.values))
+        .datum(TO_JS_CONVERSIONS[this.props.type.bson_type](this.props.type.values))
         .call(this.state.chart);
     } else {
       d3.select(el)
