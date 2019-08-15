@@ -38,7 +38,7 @@ class UniqueMiniChart extends Component {
     }
     const samp = this.state.sample || [];
     const fieldName = this.props.fieldName.toLowerCase();
-    const typeName = this.props.type.name.toLowerCase();
+    const typeName = this.props.type.bson_type.toLowerCase();
     const randomValueList = samp.map((value, i) => {
       return (
         <ValueBubble

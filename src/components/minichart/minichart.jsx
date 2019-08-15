@@ -81,7 +81,7 @@ class MiniChart extends Component {
   minichartFactory() {
     // cast all numeric types to Number pseudo-type
     const typeName = includes([ CONSTANTS.DECIMAL_128, CONSTANTS.DOUBLE, CONSTANTS.INT_32, CONSTANTS.LONG ],
-      this.props.type.name) ? CONSTANTS.NUMBER : this.props.type.name;
+      this.props.type.bson_type) ? CONSTANTS.NUMBER : this.props.type.bson_type;
 
     const fieldName = this.props.fieldName;
     const queryValue = this.state.filter[fieldName];

@@ -112,13 +112,14 @@ class Schema extends Component {
   renderFieldList() {
     let fieldList = null;
     if (includes(['outdated', 'complete'], this.props.samplingState)) {
-      fieldList = get(this.props.schema, 'fields', []).map((field) => {
+      const fields = get(this.props.schema, 'fields', {});
+      fieldList = Object.keys(fields).map((key) => {
         return (
           <Field
-            key={field.name}
+            key={name}
             actions={this.props.actions}
             localAppRegistry={this.props.store.localAppRegistry}
-            {...field} />
+            {...fields[key]} />
         );
       });
     }

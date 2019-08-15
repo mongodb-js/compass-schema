@@ -23,7 +23,7 @@ class Field extends Component {
     localAppRegistry: PropTypes.object.isRequired,
     name: PropTypes.string,
     path: PropTypes.string,
-    types: PropTypes.array,
+    types: PropTypes.object,
     fields: PropTypes.array
   }
 
@@ -67,13 +67,13 @@ class Field extends Component {
       // return empty div if field is collapsed
       fieldList = [];
     } else {
-      fieldList = fields.map((field) => {
+      fieldList = Object.keys(fields).map((key) => {
         return (
           <Field
-            key={field.name}
+            key={key}
             actions={this.props.actions}
             localAppRegistry={this.props.localAppRegistry}
-            {...field} />
+            {...fields[key]} />
         );
       });
     }
@@ -158,12 +158,12 @@ class Field extends Component {
     const cls = FIELD_CLASS + ' ' + (this.state.collapsed ? 'collapsed' : 'expanded');
 
     // types represented as horizontal bars with labels
-    const typeList = this.state.types.map((type) => {
+    const typeList = Object.keys(this.state.types).map((key) => {
       // allow for semantic types and convert the type, e.g. geo coordinates
-      type = this.getSemanticType(type);
+      const type = this.getSemanticType(this.state.types[key]);
       return (
         <Type
-          key={'type-' + type.name}
+          key={'type-' + key}
           activeType={this.state.activeType}
           renderType={this.renderType.bind(this)}
           self={type}
