@@ -5,6 +5,7 @@ import isEqual from 'lodash.isequal';
 import range from 'lodash.range';
 import min from 'lodash.min';
 import max from 'lodash.max';
+import bson from 'bson';
 import sortBy from 'lodash.sortby';
 import groupBy from 'lodash.groupby';
 import defaults from 'lodash.defaults';
@@ -205,7 +206,8 @@ const minicharts_d3fns_date = (appRegistry) => {
   function chart(selection) {
     selection.each(function(data) {
       const values = data.map(function(d) {
-        const ts = extractTimestamp(d);
+        const objectId = bson.ObjectId.createFromHexString(d);
+        const ts = objectId.getTimestamp();
         return {
           label: format(ts),
           ts: ts,
