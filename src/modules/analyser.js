@@ -30,7 +30,7 @@ class Analyser extends Transform {
       this.parser.writeRaw(chunk);
       done();
     } catch (e) {
-      console.log(e);
+      throw new Error(e);
       done(e);
     }
   }
