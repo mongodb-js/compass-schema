@@ -69,7 +69,6 @@ const dataService = new DataService(connection);
 dataService.connect((error, ds) => {
   setDataProvider(store, error, ds);
   setNamespace(store, 'ships.shipwrecks');
-  // setNamespace(store, 'citibike.trips');
 });
 
 // Create a HMR enabled render function

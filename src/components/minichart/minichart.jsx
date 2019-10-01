@@ -129,8 +129,8 @@ class MiniChart extends Component {
         />
       );
     }
-    if (typeName === 'Undefined') {
-      return <div>Undefined</div>;
+    if (typeName === 'Null') {
+      return <div>Null</div>;
     }
     if (!fn) {
       return null;
