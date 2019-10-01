@@ -320,6 +320,7 @@ const configureStore = (options = {}) => {
           })
           .on('end', () => {
             const obj = schemaParser.toObject();
+            console.log('object', obj)
             onSuccess(obj);
             if ((numSamples === 0 || sampleCount > 0) && this.state.samplingState !== 'error') {
               // @todo: Durran: not getting here yet.

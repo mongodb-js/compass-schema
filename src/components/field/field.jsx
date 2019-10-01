@@ -38,9 +38,9 @@ class Field extends Component {
   }
 
   componentWillMount() {
-    // sort the types in descending order and push undefined to the end
+    // sort the types in descending order and push null to the end
     const types = sortBy(this.props.types, (type) => {
-      if (type.name === 'Undefined') {
+      if (type.name === 'Null') {
         return -Infinity;
       }
       return type.probability;
@@ -68,6 +68,7 @@ class Field extends Component {
       fieldList = [];
     } else {
       fieldList = Object.keys(fields).map((key) => {
+        console.log('key', key)
         return (
           <Field
             key={key}
