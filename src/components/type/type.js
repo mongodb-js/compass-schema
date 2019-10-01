@@ -66,9 +66,9 @@ class Type extends Component {
     if (!this.props.showSubTypes) {
       return null;
     }
-    // sort the subtypes same as types (by probability, undefined last)
+    // sort the subtypes same as types (by probability, null last)
     const subtypes = sortBy(this.props.types, (type) => {
-      if (type.name === 'Undefined') {
+      if (type.name === 'Null') {
         return -Infinity;
       }
       return type.probability;
