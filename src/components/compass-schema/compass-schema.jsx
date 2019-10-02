@@ -113,7 +113,9 @@ class Schema extends Component {
     let fieldList = null;
     if (includes(['outdated', 'complete'], this.props.samplingState)) {
       const fields = get(this.props.schema, 'fields', {});
-      fieldList = Object.keys(fields).map((key) => {
+      // sort fields alphabetically, since Object.keys() does not keep initial
+      // order
+      fieldList = Object.keys(fields).sort().map((key) => {
         return (
           <Field
             key={name}
