@@ -7,16 +7,6 @@ import bson from 'bson';
 import assign from 'lodash.assign';
 
 /**
- * Conversion for display in minicharts for non-promoted BSON types.
- */
-const TO_JS_CONVERSIONS = {
-  'Double': (values) => values.map((v) => v.value),
-  'Int32': (values) => values.map((v) => v.value),
-  'Long': (values) => values.map((v) => v.toNumber()),
-  'Decimal128': (values) => values.map((v) => v.toString())
-};
-
-/**
  * Convert back to BSON types from the raw JS.
  */
 const TO_BSON_CONVERSIONS = {
@@ -100,7 +90,11 @@ class D3Component extends Component {
       .width(this.props.width)
       .height(this.props.height);
 
-    // @todo: Durran add the original type here.
+    // @todo: Durran: add the original type here.
+    //
+    // @todo: Irina: figure out if we need the promoter, since all the values
+    // are already converted to acceptable JS values. bson_type can be stored in
+    // options as well
     this.state.chart.options({
       fieldName: this.props.fieldName,
       unique: this.props.type.unique || 0,
@@ -108,15 +102,9 @@ class D3Component extends Component {
       promoter: TO_BSON_CONVERSIONS[this.props.type.bson_type] || DEFAULT
     });
 
-    if (TO_JS_CONVERSIONS.hasOwnProperty(this.props.type.bson_type)) {
-      d3.select(el)
-        .datum(TO_JS_CONVERSIONS[this.props.type.bson_type](this.props.type.values))
-        .call(this.state.chart);
-    } else {
-      d3.select(el)
-        .datum(this.props.type.values)
-        .call(this.state.chart);
-    }
+    d3.select(el)
+      .datum(this.props.type.values)
+      .call(this.state.chart);
   }
 
   render() {
