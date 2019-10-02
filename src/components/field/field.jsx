@@ -68,7 +68,6 @@ class Field extends Component {
       fieldList = [];
     } else {
       fieldList = Object.keys(fields).map((key) => {
-        console.log('key', key)
         return (
           <Field
             key={key}
