@@ -10,7 +10,7 @@ import debounce from 'lodash.debounce';
 import { addLayer, generateGeoQuery } from 'modules/geo';
 
 let schemaModule;
-import('@mongodb-rust/wasm-schema-parser').
+import('../../../mongodb-schema-parser/pkg').
   then(module => { schemaModule = module; }).
   catch(e => console.error('Cannot load @mongodb-rust/wasm-schema-parser', e));
 
@@ -330,7 +330,6 @@ const configureStore = (options = {}) => {
           })
           .on('end', () => {
             const obj = schemaParser.toObject();
-            console.log('object', obj)
             onSuccess(obj);
             if ((numSamples === 0 || sampleCount > 0) && this.state.samplingState !== 'error') {
               // @todo: Durran: not getting here yet.

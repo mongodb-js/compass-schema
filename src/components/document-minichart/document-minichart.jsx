@@ -13,7 +13,7 @@ class DocumentMinichart extends Component {
   render() {
     let docFieldsMessage = '';
     if (this.props.nestedDocType) {
-      const numFields = get(this.props.nestedDocType.fields, 'length', 0);
+      const numFields = Object.keys(this.props.nestedDocType.fields).length;
       const nestedFields = pluralize('nested field', numFields, true);
       docFieldsMessage = `Document with ${nestedFields}.`;
     }

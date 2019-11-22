@@ -180,6 +180,7 @@
     "lodash.sortbyorder": "^3.4.4",
     "lodash.sum": "^4.0.2",
     "mapbox-gl": "^1.2.0",
+    "mongodb-query-parser": "^1.4.3",
     "mongodb-query-util": "^0.0.3",
     "mongodb-redux-common": "^0.0.1",
     "mongodb-schema": "^8.2.5",

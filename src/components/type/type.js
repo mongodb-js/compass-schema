@@ -21,7 +21,7 @@ class Type extends Component {
 
   static propTypes = {
     bson_type: PropTypes.string.isRequired,
-    types: PropTypes.array,
+    types: PropTypes.object,
     activeType: PropTypes.any,
     self: PropTypes.object,
     probability: PropTypes.number.isRequired,

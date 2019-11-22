@@ -17,13 +17,15 @@ class ArrayMinichart extends Component {
   render() {
     let arrayOfFieldsMessage = '';
     if (this.props.nestedDocType) {
-      const numFields = get(this.props.nestedDocType.fields, 'length', 0);
+      const numFields = Object.keys(this.props.nestedDocType.fields).length;
       const nestedFields = pluralize('nested field', numFields, true);
       arrayOfFieldsMessage = `Array of documents with ${nestedFields}.`;
     }
 
     const minLength = min(this.props.type.lengths);
-    const averageLength = numeral(this.props.type.average_length).format('0.0[0]');
+    const average = this.props.type.lengths
+      .reduce((a, b) => a + b, 0) / this.props.type.lengths.length;
+    const averageLength = numeral(average).format('0.0[0]');
     const maxLength = max(this.props.type.lengths);
 
     return (
