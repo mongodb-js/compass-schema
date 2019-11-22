@@ -118,7 +118,7 @@ class Schema extends Component {
       fieldList = Object.keys(fields).sort().map((key) => {
         return (
           <Field
-            key={name}
+            key={key}
             actions={this.props.actions}
             localAppRegistry={this.props.store.localAppRegistry}
             {...fields[key]} />

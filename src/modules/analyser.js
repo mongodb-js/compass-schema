@@ -26,11 +26,9 @@ class Analyser extends Transform {
    */
   _transform(chunk, encoding, done) {
     try {
-      // @todo: Durran: Getting quite a few 'unreachable' errors from the WASM.
       this.parser.writeRaw(chunk);
       done();
     } catch (e) {
-      throw new Error(e);
       done(e);
     }
   }

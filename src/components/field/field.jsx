@@ -67,10 +67,10 @@ class Field extends Component {
       // return empty div if field is collapsed
       fieldList = [];
     } else {
-      fieldList = Object.keys(fields).map((key) => {
+      fieldList = Object.keys(fields).map((key, index) => {
         return (
           <Field
-            key={key}
+            key={index}
             actions={this.props.actions}
             localAppRegistry={this.props.localAppRegistry}
             {...fields[key]} />
@@ -98,14 +98,14 @@ class Field extends Component {
    */
   getNestedDocType() {
     // check for directly nested document first
-    const docType = find(this.props.types, { name: 'Document' });
+    const docType = find(this.props.types, { bson_type: 'Document' });
     if (docType) {
-      return docType;
+      return docType.schema;
     }
     // otherwise check for nested documents inside an array
-    const arrType = find(this.props.types, { name: 'Array' });
+    const arrType = find(this.props.types, { bson_type: 'Array' });
     if (arrType) {
-      return find(arrType.types, { name: 'Document' });
+      return find(arrType.types, { bson_type: 'Document' });
     }
     return null;
   }
@@ -163,7 +163,7 @@ class Field extends Component {
       const type = this.getSemanticType(this.state.types[key]);
       return (
         <Type
-          key={'type-' + key}
+          key={'type-' + this.state.types[key]}
           activeType={this.state.activeType}
           renderType={this.renderType.bind(this)}
           self={type}
