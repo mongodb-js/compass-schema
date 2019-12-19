@@ -98,14 +98,14 @@ class Field extends Component {
    */
   getNestedDocType() {
     // check for directly nested document first
-    const docType = find(this.props.types, { bson_type: 'Document' });
+    const docType = find(this.props.types, { name: 'Document' });
     if (docType) {
-      return docType.schema;
+      return docType;
     }
     // otherwise check for nested documents inside an array
-    const arrType = find(this.props.types, { bson_type: 'Array' });
+    const arrType = find(this.props.types, { name: 'Array' });
     if (arrType) {
-      return find(arrType.types, { bson_type: 'Document' });
+      return find(arrType.types, { name: 'Document' });
     }
     return null;
   }

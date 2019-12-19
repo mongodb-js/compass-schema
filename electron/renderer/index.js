@@ -68,7 +68,10 @@ const dataService = new DataService(connection);
 
 dataService.connect((error, ds) => {
   setDataProvider(store, error, ds);
-  setNamespace(store, 'ships.shipwrecks');
+  // setNamespace(store, 'supplies.sales');
+  // setNamespace(store, 'ships.shipwrecks');
+  // setNamespace(store, 'test.nested_documents'); // nested array of documents of arrays
+  setNamespace(store, 'nested.nested_documents'); // nested array of documents of arrays
 });
 
 // Create a HMR enabled render function
