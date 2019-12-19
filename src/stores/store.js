@@ -302,7 +302,7 @@ const configureStore = (options = {}) => {
               samplingTimeMS: new Date() - samplingStart
             });
           })
-          .on('data', () => {
+          .on('data', (data) => {
             sampleCount ++;
             debounce(() => {
               const newProgress = Math.ceil(sampleCount / numSamples * 100);
