@@ -10,7 +10,7 @@ import debounce from 'lodash.debounce';
 import { addLayer, generateGeoQuery } from 'modules/geo';
 
 let schemaModule;
-import('../../../mongodb-schema-parser/pkg').
+import('@mongodb-rust/wasm-schema-parser').
   then(module => { schemaModule = module; }).
   catch(e => console.error('Cannot load @mongodb-rust/wasm-schema-parser', e));
 
