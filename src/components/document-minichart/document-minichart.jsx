@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import pluralize from 'pluralize';
-import get from 'lodash.get';
 
 class DocumentMinichart extends Component {
   static displayName = 'DocumentMiniChartComponent';

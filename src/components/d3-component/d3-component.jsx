@@ -13,6 +13,7 @@ const TO_BSON_CONVERSIONS = {
   'Long': (value) => bson.Long.fromNumber(value),
   'Decimal128': (value) => bson.Decimal128.fromString(value),
   'Date': (value) => new Date(value),
+  'UtcDatetime': (value) => new Date(value),
   'ObjectId': (value) => bson.ObjectId.createFromHexString(value)
 };
 

@@ -27,7 +27,19 @@ function generateDefaults(n) {
 }
 
 function extractTimestamp(d) {
-  return d._bsontype === 'ObjectId' ? d.getTimestamp() : d;
+  // We need to get a timestamp from a string that could be an actual date, or
+  // an object id.
+  // So, at first try creating a bson ObjectId, and if that fails, create a new
+  // date object from string.
+  // TODO: this could be cleaner.
+  try {
+    const objectId = bson.ObjectId.createFromHexString(d);
+    return objectId.getTimestamp();
+  } catch (e) {
+    // error does not matter here, since we know objectid creation failed and
+    // this is then a date string.
+    return new Date(d);
+  }
 }
 
 const minicharts_d3fns_date = (appRegistry) => {
@@ -206,8 +218,7 @@ const minicharts_d3fns_date = (appRegistry) => {
   function chart(selection) {
     selection.each(function(data) {
       const values = data.map(function(d) {
-        const objectId = bson.ObjectId.createFromHexString(d);
-        const ts = objectId.getTimestamp();
+        const ts = extractTimestamp(d);
         return {
           label: format(ts),
           ts: ts,
