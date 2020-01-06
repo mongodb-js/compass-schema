@@ -80,8 +80,10 @@ class MiniChart extends Component {
 
   minichartFactory() {
     // cast all numeric types to Number pseudo-type
-    const typeName = includes([ CONSTANTS.DECIMAL_128, CONSTANTS.DOUBLE, CONSTANTS.INT_32, CONSTANTS.LONG ],
-      this.props.type.name) ? CONSTANTS.NUMBER : this.props.type.name;
+    // when drawing charts, group all the types of dates together
+    const typeName = includes([ CONSTANTS.DECIMAL_128, CONSTANTS.DOUBLE, CONSTANTS.INT_32, CONSTANTS.LONG ], this.props.type.name)
+      ? CONSTANTS.NUMBER : includes([ CONSTANTS.UTCDATETIME, CONSTANTS.TIMESTAMP ], this.props.type.name)
+        ? CONSTANTS.DATE : this.props.type.name;
 
     const fieldName = this.props.fieldName;
     const queryValue = this.state.filter[fieldName];

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import get from 'lodash.get';
 import min from 'lodash.min';
 import max from 'lodash.max';
 import pluralize from 'pluralize';
