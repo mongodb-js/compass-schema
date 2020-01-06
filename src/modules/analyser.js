@@ -27,7 +27,7 @@ class Analyser extends Transform {
   _transform(chunk, encoding, done) {
     try {
       this.parser.writeRaw(chunk);
-      done();
+      done(null, chunk);
     } catch (e) {
       done(e);
     }

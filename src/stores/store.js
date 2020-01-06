@@ -319,10 +319,8 @@ const configureStore = (options = {}) => {
             onError(analysisErr);
           })
           .on('end', () => {
-            const obj = schemaParser.toObject();
-            onSuccess(obj);
             if ((numSamples === 0 || sampleCount > 0) && this.state.samplingState !== 'error') {
-              // @todo: Durran: not getting here yet.
+              onSuccess(schemaParser.toObject());
             }
             this.stopSampling();
           });
