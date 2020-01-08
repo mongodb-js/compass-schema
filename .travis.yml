@@ -20,6 +20,7 @@ before_script:
   - sh -e /etc/init.d/xvfb start
 before_install:
   - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> .npmrc
+  - npm i -g npm@6.13.2
 script: npm run ci
 cache:
   directories:
