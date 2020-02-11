@@ -99,7 +99,7 @@
     "ignore-loader": "^0.1.2",
     "inject-loader": "^4.0.1",
     "istanbul-instrumenter-loader": "^3.0.1",
-    "jquery": "^2.1.4",
+    "jquery": "^3.4.0",
     "jsdom": "^16.1.0",
     "jsdom-global": "^3.0.2",
     "karma": "^4.4.1",
