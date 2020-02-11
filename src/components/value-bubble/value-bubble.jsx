@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import has from 'lodash.has';
-import includes from 'lodash.includes';
-import isString from 'lodash.isstring';
+import { has, includes, isString } from 'lodash';
 import { hasDistinctValue } from 'mongodb-query-util';
 import { DECIMAL_128, DOUBLE, LONG, INT_32 } from 'constants';
 

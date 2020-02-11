@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import Type from 'components/type';
 import Minichart from 'components/minichart';
 import detectCoordinates from 'detect-coordinates';
-import sortBy from 'lodash.sortby';
-import get from 'lodash.get';
-import find from 'lodash.find';
+import { sortBy, get, find } from 'lodash';
 
 /**
  * The full schema component class.

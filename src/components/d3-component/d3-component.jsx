@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ReactDOM from 'react-dom';
 import d3 from 'd3';
 import bson from 'bson';
-import assign from 'lodash.assign';
+import { assign } from 'lodash';
 
 /**
  * Convert back to BSON types from the raw JS.

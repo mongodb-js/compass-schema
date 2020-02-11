@@ -16,7 +16,7 @@ import GeoscatterMapItem from './marker';
 
 import { DEFAULT_TILE_URL } from './constants';
 import { getHereAttributionMessage } from './utils';
-import debounce from 'lodash.debounce';
+import { debounce } from 'lodash';
 
 // TODO: Disable boxZoom handler for circle lasso.
 //

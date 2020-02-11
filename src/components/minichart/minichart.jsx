@@ -6,7 +6,7 @@ import ArrayMinichart from 'components/array-minichart';
 import CoordinatesMinichart from 'components/coordinates-minichart';
 import D3Component from 'components/d3-component';
 
-import includes from 'lodash.includes';
+import { includes } from 'lodash';
 import vizFns from 'modules';
 import CONSTANTS from 'constants/schema';
 

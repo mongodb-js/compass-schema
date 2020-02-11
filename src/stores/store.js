@@ -4,9 +4,7 @@ import StateMixin from 'reflux-state-mixin';
 import StatusSubview from 'components/status-subview';
 import Analyser from 'modules/analyser';
 import toNS from 'mongodb-ns';
-import get from 'lodash.get';
-import has from 'lodash.has';
-import debounce from 'lodash.debounce';
+import { get, has, debounce } from 'lodash';
 import { addLayer, generateGeoQuery } from 'modules/geo';
 
 let schemaModule;

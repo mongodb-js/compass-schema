@@ -1,15 +1,18 @@
 /* eslint no-use-before-define: 0, camelcase:0 */
-import d3 from 'd3';
-import assign from 'lodash.assign';
-import isEqual from 'lodash.isequal';
-import range from 'lodash.range';
-import min from 'lodash.min';
-import max from 'lodash.max';
 import bson from 'bson';
-import sortBy from 'lodash.sortby';
-import groupBy from 'lodash.groupby';
-import defaults from 'lodash.defaults';
-import map from 'lodash.map';
+import d3 from 'd3';
+import {
+  assign,
+  isEqual,
+  range,
+  min,
+  max,
+  sortBy,
+  groupBy,
+  defaults,
+  map
+} from 'lodash';
+
 import $ from 'jquery';
 import moment from 'moment';
 import shared from './shared';
