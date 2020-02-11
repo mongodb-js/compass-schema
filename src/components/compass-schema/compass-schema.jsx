@@ -7,8 +7,7 @@ import Field from 'components/field';
 import SamplingMessage from 'components/sampling-message';
 import ZeroGraphic from 'components/zero-graphic';
 import CONSTANTS from 'constants/schema';
-import includes from 'lodash.includes';
-import get from 'lodash.get';
+import { includes, get } from 'lodash';
 import classnames from 'classnames';
 
 import styles from './compass-schema.less';

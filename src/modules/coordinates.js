@@ -1,9 +1,6 @@
 /* eslint camelcase: 0 */
 import d3 from 'd3';
-import assign from 'lodash.assign';
-import defer from 'lodash.defer';
-import get from 'lodash.get';
-import isEqual from 'lodash.isequal';
+import { assign, defer, get, isEqual } from 'lodash';
 import shared from './shared';
 import turfDistance from 'turf-distance';
 import turfPoint from 'turf-point';

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import sortBy from 'lodash.sortby';
-import find from 'lodash.find';
+import { sortBy, find } from 'lodash';
 import numeral from 'numeral';
 import ReactTooltip from 'react-tooltip';
 import TOOLTIP_IDS from 'constants/schema';

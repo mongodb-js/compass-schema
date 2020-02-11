@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import includes from 'lodash.includes';
+import { includes } from 'lodash';
 
 const SHOW_STEPS_TIME_MS = 3000;
 

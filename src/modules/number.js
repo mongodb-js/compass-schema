@@ -1,11 +1,13 @@
 /* eslint camelcase: 0 */
 import d3 from 'd3';
-import assign from 'lodash.assign';
-import has from 'lodash.has';
-import includes from 'lodash.includes';
-import groupBy from 'lodash.groupby';
-import sortBy from 'lodash.sortby';
-import map from 'lodash.map';
+import {
+  assign,
+  has,
+  includes,
+  groupBy,
+  sortBy,
+  map
+} from 'lodash';
 import many from './many';
 import shared from './shared';
 
