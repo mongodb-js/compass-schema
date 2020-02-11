@@ -152,7 +152,7 @@
     "xvfb-maybe": "^0.2.1"
   },
   "dependencies": {
-    "@mongodb-rust/wasm-schema-parser": "^0.4.2",
+    "@mongodb-rust/wasm-schema-parser": "^0.5.0",
     "detect-coordinates": "^0.2.0",
     "leaflet": "^1.6.0",
     "leaflet-draw": "^1.0.4",
