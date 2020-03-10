@@ -156,12 +156,12 @@ class Field extends Component {
     const cls = FIELD_CLASS + ' ' + (this.state.collapsed ? 'collapsed' : 'expanded');
 
     // types represented as horizontal bars with labels
-    const typeList = Object.keys(this.state.types).map((key) => {
+    const typeList = Object.keys(this.state.types).map((key, index) => {
       // allow for semantic types and convert the type, e.g. geo coordinates
       const type = this.getSemanticType(this.state.types[key]);
       return (
         <Type
-          key={'type-' + this.state.types[key]}
+          key={index}
           activeType={this.state.activeType}
           renderType={this.renderType.bind(this)}
           self={type}
