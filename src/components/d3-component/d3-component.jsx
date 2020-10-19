@@ -55,6 +55,10 @@ class D3Component extends Component {
     this._redraw();
   }
 
+  componentWillUnmount() {
+    this._cleanup();
+  }
+
   _getContainer() {
     let options = {
       className: 'minichart',
@@ -83,6 +87,12 @@ class D3Component extends Component {
       style: sizeOptions
     });
     return <div {...options}></div>;
+  }
+
+  _cleanup() {
+    if (this.state.chart) {
+      this.state.chart.cleanup();
+    }
   }
 
   _redraw() {
