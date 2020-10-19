@@ -444,8 +444,9 @@ const minicharts_d3fns_date = (appRegistry) => {
   };
 
   chart.cleanup = function() {
-    for (const subchart of subcharts)
+    for (const subchart of subcharts) {
       subchart.cleanup();
+    }
     tip.destroy();
     return chart;
   };
