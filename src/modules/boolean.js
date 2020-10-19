@@ -78,6 +78,11 @@ const minicharts_d3fns_boolean = (localAppRegistry) => {
     return chart;
   };
 
+  chart.cleanup = function() {
+    fewChart.cleanup();
+    return chart;
+  };
+
   return chart;
 };
 

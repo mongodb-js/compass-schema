@@ -155,6 +155,11 @@ const minicharts_d3fns_number = (appRegistry) => {
     return chart;
   };
 
+  chart.cleanup = function() {
+    manyChart.cleanup();
+    return chart;
+  };
+
   return chart;
 };
 

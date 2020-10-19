@@ -55,6 +55,7 @@ const minicharts_d3fns_date = (appRegistry) => {
   const upperRatio = 2.5;
   const upperMargin = 20;
   const options = {};
+  const subcharts = [];
 
   const weekdayLabels = moment.weekdays();
 
@@ -66,7 +67,7 @@ const minicharts_d3fns_date = (appRegistry) => {
 
   // set up tooltips
   const tip = d3.tip()
-    .attr('class', 'd3-tip')
+    .attr('class', 'd3-tip d3-tip-date')
     .html(function(d) {
       return d.label;
     })
@@ -397,6 +398,7 @@ const minicharts_d3fns_date = (appRegistry) => {
           }
         });
       weekdayContainer.call(manyDayChart);
+      subcharts.push(manyDayChart);
 
       chartWidth = innerWidth / (upperRatio + 1) * upperRatio - upperMargin;
       const hourContainer = g.select('g.hour').data([hours]);
@@ -413,6 +415,7 @@ const minicharts_d3fns_date = (appRegistry) => {
           }
         });
       hourContainer.call(manyHourChart);
+      subcharts.push(manyHourChart);
     });
   }
 
@@ -437,6 +440,13 @@ const minicharts_d3fns_date = (appRegistry) => {
       return options;
     }
     assign(options, value);
+    return chart;
+  };
+
+  chart.cleanup = function() {
+    for (const subchart of subcharts)
+      subchart.cleanup();
+    tip.destroy();
     return chart;
   };
 

@@ -41,6 +41,10 @@ class D3Component extends Component {
     this.state = { chart: null };
   }
 
+  componentWillUnmount() {
+    this._cleanup();
+  }
+
   componentWillMount() {
     this.setState({
       chart: this.props.fn(this.props.localAppRegistry)
@@ -83,6 +87,12 @@ class D3Component extends Component {
       style: sizeOptions
     });
     return <div {...options}></div>;
+  }
+
+  _cleanup() {
+    if (this.state.chart) {
+      this.state.chart.cleanup();
+    }
   }
 
   _redraw() {
