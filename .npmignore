@@ -15,3 +15,6 @@ test/
 coverage/
 lib/index.html
 lib/assets/
+
+scripts/**/*
+!scripts/download-akzidenz.js
