@@ -61,7 +61,7 @@ const store = configureStore({
 const render = Component => {
   ReactDOM.render(
     <AppContainer>
-      <div style={{ height: '100vh' }}>
+      <div style={{ height: '100vh', display: 'flex', flexDirection: 'column' }}>
         <StatusPlugin />
         <Component store={store} actions={actions} />
       </div>
