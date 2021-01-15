@@ -121,7 +121,7 @@
     "mongodb-ace-mode": "^0.3.0",
     "mongodb-ace-theme-query": "0.0.2",
     "mongodb-connection-model": "^13.1.5",
-    "mongodb-data-service": "^14.0.5",
+    "mongodb-data-service": "^18.2.0",
     "mongodb-js-precommit": "^2.0.0",
     "mongodb-reflux-store": "0.0.1",
     "node-fetch": "^2.6.0",
