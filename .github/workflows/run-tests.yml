@@ -37,15 +37,10 @@ jobs:
             ${{ runner.os }}-
 
       - name: Install Required OS Packages
-        run: sudo apt-get -y install libkrb5-dev libsecret-1-dev net-tools
+        run: sudo apt-get -y install libkrb5-dev libsecret-1-dev net-tools xvfb
 
       - name: Install NPM Packages
         run: npm ci
-
-      - name: Start xvfb
-        run:
-          export DISPLAY=:99.0
-          sh -e /etc/init.d/xvfb start
 
       - name: Check and Test
         run: |
@@ -63,5 +58,5 @@ jobs:
             echo "... killed?!"; \
             sleep 3; \
           done
-          npm run test:karma
+          xvfb-run --auto-servernum npm run test:karma
           npm run compile
