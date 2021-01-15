@@ -106,8 +106,7 @@ class Schema extends Component {
     } else {
       banner = (
         <SamplingMessage
-          sampleSize={this.props.schema ? this.props.schema.count : 0}
-          count={this.props.count} />
+          sampleSize={this.props.schema ? this.props.schema.count : 0} />
       );
     }
     return banner;

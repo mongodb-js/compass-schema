@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { InfoSprinkle } from 'hadron-react-components';
-import numeral from 'numeral';
 import pluralize from 'pluralize';
 
 /**
@@ -19,13 +18,7 @@ class SamplingMessage extends Component {
   static displayName = 'SamplingMessageComponent';
 
   static propTypes = {
-    sampleSize: PropTypes.number.isRequired,
-    count: PropTypes.number.isRequired
-  }
-
-  _samplePercentage() {
-    const percent = (this.props.count === 0) ? 0 : this.props.sampleSize / this.props.count;
-    return numeral(percent).format('0.00%');
+    sampleSize: PropTypes.number.isRequired
   }
 
   _openLink(link) {
@@ -39,10 +32,10 @@ class SamplingMessage extends Component {
    * @returns {React.Component} The sampling message.
    */
   render() {
-    const noun = pluralize('document', this.props.count);
+    const noun = pluralize('document', this.props.sampleSize);
     return (
       <div className="sampling-message">
-        This report is based on a sample of max&nbsp;
+        This report is based on a sample of &nbsp;
         <b>{this.props.sampleSize}</b>&nbsp;{noun}.
         <InfoSprinkle
           helpLink={HELP_URLS.SCHEMA_SAMPLING}
