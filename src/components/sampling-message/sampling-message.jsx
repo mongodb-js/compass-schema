@@ -9,7 +9,7 @@ import pluralize from 'pluralize';
  */
 const HELP_URLS = Object.freeze({
   DOCUMENTS: 'https://docs.mongodb.com/compass/master/documents/',
-  SCHEMA_SAMPLING: 'https://docs.mongodb.com/compass/current/faq/#what-is-sampling-and-why-is-it-used'
+  SCHEMA_SAMPLING: 'https://docs.mongodb.com/compass/current/sampling'
 });
 
 /**
@@ -42,10 +42,8 @@ class SamplingMessage extends Component {
     const noun = pluralize('document', this.props.count);
     return (
       <div className="sampling-message">
-        Query returned&nbsp;
-        <b>{this.props.count}</b>&nbsp;{noun}.
-        This report is based on a sample of&nbsp;
-        <b>{this.props.sampleSize}</b>&nbsp;{noun} ({this._samplePercentage()}).
+        This report is based on a sample of max&nbsp;
+        <b>{this.props.sampleSize}</b>&nbsp;{noun}.
         <InfoSprinkle
           helpLink={HELP_URLS.SCHEMA_SAMPLING}
           onClickHandler={this._openLink.bind(this)}
