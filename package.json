@@ -16,7 +16,6 @@
     "test:watch": "cross-env NODE_ENV=test mocha-webpack \"./src/**/*.spec.js\" --watch",
     "test:karma": "cross-env NODE_ENV=test karma start",
     "cover": "nyc npm run test",
-    "ci": "npm run cover && npm run test:karma && npm run compile && npm run check",
     "check": "depcheck . && eslint .",
     "link-plugin": "./scripts/link.sh",
     "unlink-plugin": "./scripts/unlink.sh",
