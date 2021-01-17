@@ -96,7 +96,7 @@
     "jquery": "^2.1.4",
     "jsdom": "^11.1.0",
     "jsdom-global": "^3.0.2",
-    "karma": "^1.7.0",
+    "karma": "^6.0.0",
     "karma-chai": "^0.1.0",
     "karma-chai-sinon": "^0.1.5",
     "karma-electron": "^5.2.1",
