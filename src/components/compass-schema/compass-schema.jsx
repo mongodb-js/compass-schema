@@ -7,16 +7,11 @@ import Field from 'components/field';
 import SamplingMessage from 'components/sampling-message';
 import ZeroGraphic from 'components/zero-graphic';
 import CONSTANTS from 'constants/schema';
-import includes from 'lodash.includes';
 import get from 'lodash.get';
 import classnames from 'classnames';
 
 import styles from './compass-schema.less';
 import SchemaSteps from '../steps/steps';
-
-const OUTDATED_WARNING = 'The schema content is outdated and no longer in sync'
-  + ' with the documents view. Press "Analyze" again to see the schema for the'
-  + ' current query.';
 
 const ERROR_WARNING = 'An error occurred during schema analysis';
 
@@ -44,7 +39,6 @@ class Schema extends Component {
       'analyzing',
       'error',
       'complete',
-      'outdated',
       'timeout'
     ]),
     samplingTimeMS: PropTypes.number,
@@ -94,10 +88,6 @@ class Schema extends Component {
   renderBanner() {
     const samplingState = this.props.samplingState;
 
-    if (samplingState === 'outdated') {
-      return <StatusRow style="warning">{OUTDATED_WARNING}</StatusRow>;
-    }
-
     if (samplingState === 'error') {
       return <StatusRow style="error">{ERROR_WARNING}: {this.props.errorMessage}</StatusRow>;
     }
@@ -117,19 +107,19 @@ class Schema extends Component {
   }
 
   renderFieldList() {
-    let fieldList = null;
-    if (includes(['outdated', 'complete'], this.props.samplingState)) {
-      fieldList = get(this.props.schema, 'fields', []).map((field) => {
-        return (
-          <Field
-            key={field.name}
-            actions={this.props.actions}
-            localAppRegistry={this.props.store.localAppRegistry}
-            {...field} />
-        );
-      });
+    if (this.props.samplingState !== 'complete') {
+      return;
     }
-    return fieldList;
+
+    return get(this.props.schema, 'fields', []).map((field) => {
+      return (
+        <Field
+          key={field.name}
+          actions={this.props.actions}
+          localAppRegistry={this.props.store.localAppRegistry}
+          {...field} />
+      );
+    });
   }
 
   renderInitialScreen() {
