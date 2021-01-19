@@ -45,10 +45,6 @@ describe('Schema Store', () => {
       expect(store.state.samplingState).to.equal('initial');
     });
 
-    it('defaults sampling progress to 0', () => {
-      expect(store.state.samplingProgress).to.equal(0);
-    });
-
     it('defaults samplingTimeMS to 0', () => {
       expect(store.state.samplingTimeMS).to.equal(0);
     });
@@ -63,10 +59,6 @@ describe('Schema Store', () => {
 
     it('defaults the schema to null', () => {
       expect(store.state.schema).to.equal(null);
-    });
-
-    it('defaults the count to 0', () => {
-      expect(store.state.count).to.equal(0);
     });
 
     it('resets samplingTimeMS after stop', () => {

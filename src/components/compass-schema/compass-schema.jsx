@@ -12,6 +12,8 @@ import get from 'lodash.get';
 import classnames from 'classnames';
 
 import styles from './compass-schema.less';
+import SchemaSteps from '../steps/steps';
+import ButtonsWaiting from '../buttons-waiting/buttons-waiting';
 
 // TODO: Durran
 // const QUERYBAR_LAYOUT = ['filter', ['project', 'limit', 'maxTimeMs']];
@@ -29,7 +31,7 @@ const SUBTEXT = 'Quickly visualize your schema to understand the frequency, type
 
 const DOCUMENTATION_LINK = 'https://docs.mongodb.com/compass/master/schema/';
 
-const MAXTIMEMS = 'Please try increasing the maxTimeMS for the query.';
+const INCREASE_MAX_TIME_MS_HINT = 'Operation exceeded time limit. Please try increasing the maxTimeMS for the query in the filter options.';
 
 /**
  * Component for the entire schema view component.
@@ -42,7 +44,6 @@ class Schema extends Component {
     store: PropTypes.object.isRequired,
     samplingState: PropTypes.oneOf([
       'initial',
-      'counting',
       'sampling',
       'analyzing',
       'error',
@@ -50,7 +51,6 @@ class Schema extends Component {
       'outdated',
       'timeout'
     ]),
-    samplingProgress: PropTypes.number,
     samplingTimeMS: PropTypes.number,
     errorMessage: PropTypes.string,
     maxTimeMS: PropTypes.number,
@@ -96,20 +96,28 @@ class Schema extends Component {
   }
 
   renderBanner() {
-    let banner;
-    if (this.props.samplingState === 'outdated') {
-      banner = <StatusRow style="warning">{OUTDATED_WARNING}</StatusRow>;
-    } else if (this.props.samplingState === 'error') {
-      banner = <StatusRow style="error">{ERROR_WARNING}: {this.props.errorMessage}</StatusRow>;
-    } else if (this.props.samplingState === 'timeout') {
-      banner = <StatusRow style="warning">{this.props.errorMessage}. {MAXTIMEMS}</StatusRow>;
-    } else {
-      banner = (
+    const samplingState = this.props.samplingState;
+
+    if (samplingState === 'outdated') {
+      return <StatusRow style="warning">{OUTDATED_WARNING}</StatusRow>;
+    }
+
+    if (samplingState === 'error') {
+      return <StatusRow style="error">{ERROR_WARNING}: {this.props.errorMessage}</StatusRow>;
+    }
+
+    if (samplingState === 'timeout') {
+      return <StatusRow style="warning">{INCREASE_MAX_TIME_MS_HINT}</StatusRow>;
+    }
+
+    if (samplingState === 'complete') {
+      return (
         <SamplingMessage
           sampleSize={this.props.schema ? this.props.schema.count : 0} />
       );
     }
-    return banner;
+
+    return null;
   }
 
   renderFieldList() {
@@ -128,6 +136,39 @@ class Schema extends Component {
     return fieldList;
   }
 
+  renderInitialScreen() {
+    return (
+      <div className={classnames(styles['schema-zero-state'])}>
+        <ZeroGraphic />
+        <ZeroState
+          header={HEADER}
+          subtext={SUBTEXT}>
+          <div className={classnames(styles['schema-zero-state-action'])}>
+            <div>
+              <TextButton
+                className="btn btn-primary btn-lg"
+                text="Analyze Schema"
+                clickHandler={this.onApplyClicked.bind(this)} />
+            </div>
+          </div>
+          <a className={classnames(styles['schema-zero-state-link'])} onClick={this.onOpenLink.bind(this)}>
+          Learn more about schema analysis in Compass
+          </a>
+        </ZeroState>
+      </div>
+    );
+  }
+
+  renderStepsScreen() {
+    return (<div id="schema-status-subview">
+      <div id="schema-status-subview">
+        <SchemaSteps
+          samplingState={this.props.samplingState}
+          actions={this.props.actions} />
+      </div>
+    </div>);
+  }
+
   /**
    * Renders the zero state during the initial state; renders the schema if not.
    * @returns {React.Component} Zero state or fields.
@@ -135,26 +176,19 @@ class Schema extends Component {
   renderContent() {
     if (this.props.samplingState === 'initial') {
       return (
-        <div className={classnames(styles['schema-zero-state'])}>
-          <ZeroGraphic />
-          <ZeroState
-            header={HEADER}
-            subtext={SUBTEXT}>
-            <div className={classnames(styles['schema-zero-state-action'])}>
-              <div>
-                <TextButton
-                  className="btn btn-primary btn-lg"
-                  text="Analyze Schema"
-                  clickHandler={this.onApplyClicked.bind(this)} />
-              </div>
-            </div>
-            <a className={classnames(styles['schema-zero-state-link'])} onClick={this.onOpenLink.bind(this)}>
-              Learn more about schema analysis in Compass
-            </a>
-          </ZeroState>
-        </div>
+        this.renderInitialScreen()
       );
     }
+
+    if (
+      this.props.samplingState === 'sampling' ||
+      this.props.samplingState === 'analyzing'
+    ) {
+      return (
+        this.renderStepsScreen()
+      );
+    }
+
     return (
       <div className="column-container">
         <div className="column main">

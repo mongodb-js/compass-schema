@@ -20,5 +20,6 @@ ignores: [
   "webpack-bundle-analyzer",
   "webpack-cli",
   "webpack-sources",
-  "file-loader"
+  "file-loader",
+  "mongodb-schema"
 ]

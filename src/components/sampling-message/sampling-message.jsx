@@ -32,11 +32,12 @@ class SamplingMessage extends Component {
    * @returns {React.Component} The sampling message.
    */
   render() {
-    const noun = pluralize('document', this.props.sampleSize);
+    const sampleSize = this.props.sampleSize;
+    const documentsNoun = pluralize('document', sampleSize);
+
     return (
       <div className="sampling-message">
-        This report is based on a sample of &nbsp;
-        <b>{this.props.sampleSize}</b>&nbsp;{noun}.
+        This report is based on a sample of&nbsp;<b>{sampleSize}</b>&nbsp;{documentsNoun}.
         <InfoSprinkle
           helpLink={HELP_URLS.SCHEMA_SAMPLING}
           onClickHandler={this._openLink.bind(this)}
