@@ -13,10 +13,6 @@ import classnames from 'classnames';
 
 import styles from './compass-schema.less';
 import SchemaSteps from '../steps/steps';
-import ButtonsWaiting from '../buttons-waiting/buttons-waiting';
-
-// TODO: Durran
-// const QUERYBAR_LAYOUT = ['filter', ['project', 'limit', 'maxTimeMs']];
 
 const OUTDATED_WARNING = 'The schema content is outdated and no longer in sync'
   + ' with the documents view. Press "Analyze" again to see the schema for the'
