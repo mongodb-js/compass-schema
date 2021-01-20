@@ -3,7 +3,6 @@ ignores: [
   "actions",
   "components",
   "modules",
-  "storybook",
   "plugin",
   "babel-cli",
   "babel-minify",

@@ -19,7 +19,6 @@
     "check": "depcheck . && eslint .",
     "link-plugin": "./scripts/link.sh",
     "unlink-plugin": "./scripts/unlink.sh",
-    "storybook": "start-storybook -p 9001 -c .storybook",
     "prepublishOnly": "npm run compile",
     "install": "node scripts/download-akzidenz.js"
   },
@@ -49,7 +48,6 @@
   "devDependencies": {
     "@mongodb-js/compass-query-bar": "^6.2.0",
     "@mongodb-js/compass-status": "^4.0.1",
-    "@storybook/react": "^3.2.0",
     "autoprefixer": "^9.4.6",
     "babel-cli": "^6.10.1",
     "babel-core": "^6.24.1",
@@ -130,7 +128,6 @@
     "react-ace": "^6.4.0",
     "react-dom": "^16.8.0",
     "react-hot-loader": "^4.1.0",
-    "react-storybook-addon-chapters": "^1.1.0",
     "reflux": "^0.4.1",
     "reflux-state-mixin": "^0.7.0",
     "resolve": "^1.4.0",
