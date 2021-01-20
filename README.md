@@ -73,8 +73,6 @@ For completeness, below is a list of directories present in this module:
 
 Apache 2.0
 
-[travis_img]: https://travis-ci.org/mongodb-js/compass-schema.svg?branch=master
-[travis_url]: https://travis-ci.org/mongodb-js/compass-schema
 [enzyme]: http://airbnb.io/enzyme/
 [enzyme-chai]: https://github.com/producthunt/chai-enzyme
 [jsdom]: https://github.com/tmpvar/jsdom
