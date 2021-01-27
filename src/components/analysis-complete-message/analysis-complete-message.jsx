@@ -3,19 +3,13 @@ import PropTypes from 'prop-types';
 import { InfoSprinkle } from 'hadron-react-components';
 import pluralize from 'pluralize';
 
-/**
- * The help URLs for things like the Documents tab.
- */
-const HELP_URLS = Object.freeze({
-  DOCUMENTS: 'https://docs.mongodb.com/compass/master/documents/',
-  SCHEMA_SAMPLING: 'https://docs.mongodb.com/compass/current/sampling'
-});
+const SCHEMA_ANALYSIS_DOCS_LINK = 'https://docs.mongodb.com/compass/current/schema';
 
 /**
- * Component for the sampling message.
+ * Component for the analysis message.
  */
-class SamplingMessage extends Component {
-  static displayName = 'SamplingMessageComponent';
+class AnalysisCompleteMessage extends Component {
+  static displayName = 'AnalysisCompleteMessageComponent';
 
   static propTypes = {
     sampleSize: PropTypes.number.isRequired
@@ -29,17 +23,17 @@ class SamplingMessage extends Component {
   /**
    * If we are on the schema tab, the smapling message is rendered.
    *
-   * @returns {React.Component} The sampling message.
+   * @returns {React.Component} The analysis message.
    */
   render() {
     const sampleSize = this.props.sampleSize;
     const documentsNoun = pluralize('document', sampleSize);
 
     return (
-      <div className="sampling-message">
+      <div className="analysis-message">
         This report is based on a sample of&nbsp;<b>{sampleSize}</b>&nbsp;{documentsNoun}.
         <InfoSprinkle
-          helpLink={HELP_URLS.SCHEMA_SAMPLING}
+          helpLink={SCHEMA_ANALYSIS_DOCS_LINK}
           onClickHandler={this._openLink.bind(this)}
         />
       </div>
@@ -47,4 +41,4 @@ class SamplingMessage extends Component {
   }
 }
 
-export default SamplingMessage;
+export default AnalysisCompleteMessage;

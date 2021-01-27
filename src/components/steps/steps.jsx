@@ -8,16 +8,16 @@ class SchemaSteps extends Component {
   static displayName = 'SchemaStepsComponent';
 
   static propTypes = {
-    samplingState: PropTypes.string.isRequired,
+    analysisState: PropTypes.string.isRequired,
     actions: PropTypes.object.isRequired
   }
 
   onStopClicked() {
-    this.props.actions.stopSampling();
+    this.props.actions.stopAnalysis();
   }
 
   renderStopButton() {
-    if (this.props.samplingState !== 'sampling') {
+    if (this.props.analysisState !== 'analyzing') {
       return;
     }
 
@@ -36,12 +36,12 @@ class SchemaSteps extends Component {
 
   render() {
     const iconClassName = 'fa fa-fw fa-spin fa-circle-o-notch';
-    const text = this.props.samplingState === 'sampling' ?
-      'Sampling Collection' : 'Analyzing Documents';
+    const text = 'Analyzing Documents';
+
     return (
       <div>
         <ul className="steps">
-          <li id="sampling-step">
+          <li id="analysis-step">
             <i className={iconClassName} />
             {text}
           </li>

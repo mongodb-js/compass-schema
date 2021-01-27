@@ -41,12 +41,8 @@ describe('Schema Store', () => {
       expect(store.ns).to.equal(namespace);
     });
 
-    it('defaults sampling state to initial', () => {
-      expect(store.state.samplingState).to.equal('initial');
-    });
-
-    it('defaults samplingTimeMS to 0', () => {
-      expect(store.state.samplingTimeMS).to.equal(0);
+    it('defaults analysis state to initial', () => {
+      expect(store.state.analysisState).to.equal('initial');
     });
 
     it('defaults the error to empty', () => {
@@ -59,16 +55,6 @@ describe('Schema Store', () => {
 
     it('defaults the schema to null', () => {
       expect(store.state.schema).to.equal(null);
-    });
-
-    it('resets samplingTimeMS after stop', () => {
-      store.setState({
-        samplingTimeMS: 100
-      });
-
-      store.stopSampling();
-
-      expect(store.state.samplingTimeMS).to.equal(0);
     });
   });
 

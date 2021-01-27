@@ -1,33 +1,30 @@
-import util from 'util';
-
 import Reflux from 'reflux';
 import ipc from 'hadron-ipc';
 import StateMixin from 'reflux-state-mixin';
 import toNS from 'mongodb-ns';
 import { addLayer, generateGeoQuery } from 'modules/geo';
-
-import mongodbSchema from 'mongodb-schema';
-const analyzeDocuments = util.promisify(mongodbSchema);
+import createSchemaAnalysis from './schema-analysis';
 
 const debug = require('debug')('mongodb-compass:stores:schema');
 
 const DEFAULT_MAX_TIME_MS = 60000;
 const DEFAULT_SAMPLE_SIZE = 1000;
 
+const ERROR_CODE_MAX_TIME_MS_EXPIRED = 50;
+
 function getErrorState(err) {
   const errorMessage = (err && err.message) || 'Unknown error';
+  const errorCode = (err && err.code);
 
-  let samplingState;
+  let analysisState;
 
-  if (errorMessage.match(/operation exceeded time limit/)) {
-    samplingState = 'timeout';
-  } else if (errorMessage.match(/operation was interrupted/)) {
-    samplingState = 'initial';
+  if (errorCode === ERROR_CODE_MAX_TIME_MS_EXPIRED) {
+    analysisState = 'timeout';
   } else {
-    samplingState = 'error';
+    analysisState = 'error';
   }
 
-  return { samplingState, errorMessage };
+  return { analysisState, errorMessage };
 }
 
 /**
@@ -104,7 +101,6 @@ const configureStore = (options = {}) => {
       };
       this.ns = '';
       this.geoLayers = {};
-      this.isSampling = false;
     },
 
     getShareText() {
@@ -131,7 +127,7 @@ const configureStore = (options = {}) => {
       return {
         localAppRegistry: null,
         globalAppRegistry: null,
-        samplingState: 'initial',
+        analysisState: 'initial',
         errorMessage: '',
         schema: null
       };
@@ -170,97 +166,78 @@ const configureStore = (options = {}) => {
       layers.eachLayer((layer) => {
         delete this.geoLayers[layer._leaflet_id];
       });
-      this.localAppRegistry.emit('compass:schema:geo-query', generateGeoQuery(this.geoLayers));
+      this.localAppRegistry.emit(
+        'compass:schema:geo-query',
+        generateGeoQuery(this.geoLayers)
+      );
     },
 
-    clearSampling: function() {
-      this.isSampling = false;
-      this.currentSession = null;
-    },
-
-    async stopSampling() {
-      const session = this.currentSession;
-
-      if (!this.isSampling) {
+    async stopAnalysis() {
+      if (!this.schemaAnalysis) {
         return;
       }
 
-      this.clearSampling();
-
-      if (session) {
-        await this.dataService.killSession(session);
+      try {
+        await this.schemaAnalysis.terminate();
+      } catch (err) {
+        debug('failed to terminate schema analysis. ignoring ...', err);
+      } finally {
+        this.schemaAnalysis = null;
       }
     },
 
-    fetchSampleDocuments: async function() {
+    startAnalysis: async function() {
+      if (this.schemaAnalysis) {
+        return;
+      }
+
       const query = this.query || {};
 
       const sampleSize = query.limit ?
         Math.min(DEFAULT_SAMPLE_SIZE, query.limit) :
         DEFAULT_SAMPLE_SIZE;
 
-      const sampleOptions = {
+      const samplingOptions = {
         query: query.filter,
         size: sampleSize,
         fields: query.project
       };
 
-      this.currentSession = this.dataService.startSession();
-
       const driverOptions = {
         maxTimeMS: query.maxTimeMS,
-        session: this.currentSession
       };
 
-      debug('fetching sample documents',
-        {ns: this.ns, sampleOptions, driverOptions}
+      const schemaAnalysis = createSchemaAnalysis(
+        this.dataService,
+        this.ns,
+        samplingOptions,
+        driverOptions
       );
 
-      return this.dataService.sample(
-        this.ns,
-        sampleOptions,
-        driverOptions
-      ).toArray();
-    },
+      this.schemaAnalysis = schemaAnalysis;
 
-    startSampling: async function() {
       try {
-        if (this.isSampling) {
-          return;
-        }
-
-        this.isSampling = true;
-
-        debug('sampling started');
+        debug('analysis started');
 
         this.setState({
-          samplingState: 'sampling',
+          analysisState: 'analyzing',
           errorMessage: '',
           schema: null
         });
 
-        const docs = await this.fetchSampleDocuments();
-
-        debug('sampling done. analyzing ...');
+        const schema = await schemaAnalysis.getResult();
 
         this.setState({
-          samplingState: 'analyzing',
-        });
-
-        const schema = await analyzeDocuments(docs);
-
-        debug('analyzing done');
-
-        this.setState({
-          samplingState: 'complete',
+          analysisState: schema ? 'complete' : 'initial',
           schema: schema
         });
 
         this.onSchemaSampled();
       } catch (err) {
+        debug('analysis error catched', err);
         this.setState(getErrorState(err));
       } finally {
-        this.clearSampling();
+        this.schemaAnalysis = null;
       }
     },
 

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { StatusRow, Tooltip, ZeroState } from 'hadron-react-components';
 import { TextButton } from 'hadron-react-buttons';
 import Field from 'components/field';
-import SamplingMessage from 'components/sampling-message';
+import AnalysisCompleteMessage from 'components/analysis-message';
 import ZeroGraphic from 'components/zero-graphic';
 import CONSTANTS from 'constants/schema';
 import get from 'lodash.get';
@@ -33,15 +33,13 @@ class Schema extends Component {
   static propTypes = {
     actions: PropTypes.object,
     store: PropTypes.object.isRequired,
-    samplingState: PropTypes.oneOf([
+    analysisState: PropTypes.oneOf([
       'initial',
-      'sampling',
       'analyzing',
       'error',
       'complete',
       'timeout'
     ]),
-    samplingTimeMS: PropTypes.number,
     errorMessage: PropTypes.string,
     maxTimeMS: PropTypes.number,
     schema: PropTypes.any,
@@ -71,11 +69,11 @@ class Schema extends Component {
   }
 
   onApplyClicked() {
-    this.props.actions.startSampling();
+    this.props.actions.startAnalysis();
   }
 
   onResetClicked() {
-    this.props.actions.startSampling();
+    this.props.actions.startAnalysis();
   }
 
   onOpenLink(evt) {
@@ -86,19 +84,19 @@ class Schema extends Component {
   }
 
   renderBanner() {
-    const samplingState = this.props.samplingState;
+    const analysisState = this.props.analysisState;
 
-    if (samplingState === 'error') {
+    if (analysisState === 'error') {
       return <StatusRow style="error">{ERROR_WARNING}: {this.props.errorMessage}</StatusRow>;
     }
 
-    if (samplingState === 'timeout') {
+    if (analysisState === 'timeout') {
       return <StatusRow style="warning">{INCREASE_MAX_TIME_MS_HINT}</StatusRow>;
     }
 
-    if (samplingState === 'complete') {
+    if (analysisState === 'complete') {
       return (
-        <SamplingMessage
+        <AnalysisCompleteMessage
           sampleSize={this.props.schema ? this.props.schema.count : 0} />
       );
     }
@@ -107,7 +105,7 @@ class Schema extends Component {
   }
 
   renderFieldList() {
-    if (this.props.samplingState !== 'complete') {
+    if (this.props.analysisState !== 'complete') {
       return;
     }
 
@@ -149,7 +147,7 @@ class Schema extends Component {
     return (<div id="schema-status-subview">
       <div id="schema-status-subview">
         <SchemaSteps
-          samplingState={this.props.samplingState}
+          analysisState={this.props.analysisState}
           actions={this.props.actions} />
       </div>
     </div>);
@@ -160,15 +158,15 @@ class Schema extends Component {
    * @returns {React.Component} Zero state or fields.
    */
   renderContent() {
-    if (this.props.samplingState === 'initial') {
+    if (this.props.analysisState === 'initial') {
       return (
         this.renderInitialScreen()
       );
     }
 
     if (
-      this.props.samplingState === 'sampling' ||
-      this.props.samplingState === 'analyzing'
+      this.props.analysisState === 'analyzing' ||
+      this.props.analysisState === 'analyzing'
     ) {
       return (
         this.renderStepsScreen()
