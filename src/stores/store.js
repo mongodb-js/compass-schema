@@ -1,16 +1,18 @@
+import util from 'util';
+
 import Reflux from 'reflux';
 import ipc from 'hadron-ipc';
 import StateMixin from 'reflux-state-mixin';
 import toNS from 'mongodb-ns';
 import { addLayer, generateGeoQuery } from 'modules/geo';
 
-import analyzeDocuments from './mongodb-schema';
-import { sample, killSession, startSession} from './data-service';
+import mongodbSchema from 'mongodb-schema';
+const analyzeDocuments = util.promisify(mongodbSchema);
 
 const debug = require('debug')('mongodb-compass:stores:schema');
 
 const DEFAULT_MAX_TIME_MS = 60000;
-const SAMPLE_SIZE = 1000;
+const DEFAULT_SAMPLE_SIZE = 1000;
 
 function getErrorState(err) {
   const errorMessage = (err && err.message) || 'Unknown error';
@@ -97,7 +99,7 @@ const configureStore = (options = {}) => {
       this.query = {
         filter: {},
         project: null,
-        limit: SAMPLE_SIZE,
+        limit: DEFAULT_SAMPLE_SIZE,
         maxTimeMS: DEFAULT_MAX_TIME_MS
       };
       this.ns = '';
@@ -178,12 +180,47 @@ const configureStore = (options = {}) => {
 
     async stopSampling() {
       const session = this.currentSession;
+
+      if (!this.isSampling) {
+        return;
+      }
+
       this.clearSampling();
 
-      // subsequent calls to stopSampling will no retry to kill the session
       if (session) {
-        await killSession(this.dataService, session);
+        await this.dataService.killSession(session);
       }
+    },
+
+    fetchSampleDocuments: async function() {
+      const query = this.query || {};
+
+      const sampleSize = query.limit ?
+        Math.min(DEFAULT_SAMPLE_SIZE, query.limit) :
+        DEFAULT_SAMPLE_SIZE;
+
+      const sampleOptions = {
+        query: query.filter,
+        size: sampleSize,
+        fields: query.project
+      };
+
+      this.currentSession = this.dataService.startSession();
+
+      const driverOptions = {
+        maxTimeMS: query.maxTimeMS,
+        session: this.currentSession
+      };
+
+      debug('fetching sample documents',
+        {ns: this.ns, sampleOptions, driverOptions}
+      );
+
+      return this.dataService.sample(
+        this.ns,
+        sampleOptions,
+        driverOptions
+      ).toArray();
     },
 
     startSampling: async function() {
@@ -194,40 +231,21 @@ const configureStore = (options = {}) => {
 
         this.isSampling = true;
 
+        debug('sampling started');
+
         this.setState({
           samplingState: 'sampling',
           errorMessage: '',
           schema: null
         });
 
-        this.currentSession = startSession(this.dataService);
+        const docs = await this.fetchSampleDocuments();
 
-        const sampleOptions = {
-          query: this.query.filter,
-          size: this.query.limit === 0 ? SAMPLE_SIZE :
-            Math.min(SAMPLE_SIZE, this.query.limit),
-          fields: this.query.project,
-          maxTimeMS: this.query.maxTimeMS,
-          session: this.currentSession
-        };
-
-        debug('start sampling', sampleOptions);
-
-        const cursor = sample(
-          this.dataService,
-          this.ns,
-          sampleOptions
-        );
-
-        const docs = await cursor.toArray();
-
-        debug('sampling done');
+        debug('sampling done. analyzing ...');
 
         this.setState({
           samplingState: 'analyzing',
         });
-
-        debug('start analyzing');
 
         const schema = await analyzeDocuments(docs);
 
