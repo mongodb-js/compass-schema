@@ -41,6 +41,11 @@ class SchemaAnalysis {
     return this._result;
   }
 
+  terminate() {
+    this._cancelGetResult();
+    this._close();
+  }
+
   async _sampleAndAnalyze() {
     try {
       const docs = await this._cursor.toArray();
@@ -56,11 +61,6 @@ class SchemaAnalysis {
     } finally {
       this._close();
     }
-  }
-
-  terminate() {
-    this._cancelGetResult();
-    this._close();
   }
 
   async _close() {

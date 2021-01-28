@@ -140,9 +140,11 @@ const configureStore = (options = {}) => {
       this.query.project = state.project;
       this.query.maxTimeMS = state.maxTimeMS;
 
-      this.setState({
-        outdated: true
-      });
+      if (this.state.analysisState === 'complete') {
+        this.setState({
+          outdated: true
+        });
+      }
     },
 
     onSchemaSampled() {
