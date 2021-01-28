@@ -129,7 +129,8 @@ const configureStore = (options = {}) => {
         globalAppRegistry: null,
         analysisState: 'initial',
         errorMessage: '',
-        schema: null
+        schema: null,
+        outdated: false
       };
     },
 
@@ -138,6 +139,10 @@ const configureStore = (options = {}) => {
       this.query.limit = state.limit;
       this.query.project = state.project;
       this.query.maxTimeMS = state.maxTimeMS;
+
+      this.setState({
+        outdated: true
+      });
     },
 
     onSchemaSampled() {
@@ -222,6 +227,7 @@ const configureStore = (options = {}) => {
         this.setState({
           analysisState: 'analyzing',
           errorMessage: '',
+          outdated: false,
           schema: null
         });
 

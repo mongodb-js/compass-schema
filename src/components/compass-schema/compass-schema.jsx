@@ -14,6 +14,11 @@ import styles from './compass-schema.less';
 import SchemaSteps from '../steps/steps';
 
 const ERROR_WARNING = 'An error occurred during schema analysis';
+const OUTDATED_WARNING = 'The schema content is outdated and no longer in sync'
+  + ' with the documents view. Press "Analyze" again to see the schema for the'
+  + ' current query.';
+
+const INCREASE_MAX_TIME_MS_HINT = 'Operation exceeded time limit. Please try increasing the maxTimeMS for the query in the filter options.';
 
 const HEADER = 'Explore your schema';
 
@@ -22,7 +27,6 @@ const SUBTEXT = 'Quickly visualize your schema to understand the frequency, type
 
 const DOCUMENTATION_LINK = 'https://docs.mongodb.com/compass/master/schema/';
 
-const INCREASE_MAX_TIME_MS_HINT = 'Operation exceeded time limit. Please try increasing the maxTimeMS for the query in the filter options.';
 
 /**
  * Component for the entire schema view component.
@@ -40,6 +44,7 @@ class Schema extends Component {
       'complete',
       'timeout'
     ]),
+    outdated: PropTypes.bool,
     errorMessage: PropTypes.string,
     maxTimeMS: PropTypes.number,
     schema: PropTypes.any,
@@ -96,8 +101,11 @@ class Schema extends Component {
 
     if (analysisState === 'complete') {
       return (
-        <AnalysisCompleteMessage
-          sampleSize={this.props.schema ? this.props.schema.count : 0} />
+        this.props.outdated ?
+          <StatusRow style="warning">{OUTDATED_WARNING}</StatusRow> :
+          <AnalysisCompleteMessage
+            sampleSize={this.props.schema ? this.props.schema.count : 0}
+          />
       );
     }
 
@@ -165,7 +173,6 @@ class Schema extends Component {
     }
 
     if (
-      this.props.analysisState === 'analyzing' ||
       this.props.analysisState === 'analyzing'
     ) {
       return (

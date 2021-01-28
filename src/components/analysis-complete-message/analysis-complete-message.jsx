@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { InfoSprinkle } from 'hadron-react-components';
 import pluralize from 'pluralize';
 
-const SCHEMA_ANALYSIS_DOCS_LINK = 'https://docs.mongodb.com/compass/current/schema';
+const SCHEMA_ANALYSIS_DOCS_LINK = 'https://docs.mongodb.com/compass/current/sampling#sampling';
 
 /**
  * Component for the analysis message.
