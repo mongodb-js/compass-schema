@@ -1,2 +1,2 @@
-import AnalysisCompleteMessage from './analysis-message';
+import AnalysisCompleteMessage from './analysis-complete-message';
 export default AnalysisCompleteMessage;

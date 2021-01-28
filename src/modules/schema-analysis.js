@@ -34,14 +34,14 @@ class SchemaAnalysis {
     if (!this._result) {
       this._result = Promise.race([
         this._cancelled,
-        this._run()
+        this._sampleAndAnalyze()
       ]);
     }
 
     return this._result;
   }
 
-  async _run() {
+  async _sampleAndAnalyze() {
     try {
       const docs = await this._cursor.toArray();
       return await analyzeDocuments(docs);
@@ -53,6 +53,8 @@ class SchemaAnalysis {
 
       debug('schema analysis failed', err);
       throw err;
+    } finally {
+      this._close();
     }
   }
 

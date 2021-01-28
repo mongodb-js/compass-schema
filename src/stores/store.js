@@ -3,7 +3,7 @@ import ipc from 'hadron-ipc';
 import StateMixin from 'reflux-state-mixin';
 import toNS from 'mongodb-ns';
 import { addLayer, generateGeoQuery } from 'modules/geo';
-import createSchemaAnalysis from './schema-analysis';
+import createSchemaAnalysis from '../modules/schema-analysis';
 
 const debug = require('debug')('mongodb-compass:stores:schema');
 
