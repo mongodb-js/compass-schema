@@ -1,5 +1,6 @@
 import configureStore from 'stores';
 import AppRegistry from 'hadron-app-registry';
+import { ANALYSIS_STATE_INITIAL } from '../../src/constants/analysis-states';
 
 describe('Schema Store', () => {
   describe('#configureStore', () => {
@@ -42,7 +43,7 @@ describe('Schema Store', () => {
     });
 
     it('defaults analysis state to initial', () => {
-      expect(store.state.analysisState).to.equal('initial');
+      expect(store.state.analysisState).to.equal(ANALYSIS_STATE_INITIAL);
     });
 
     it('defaults the error to empty', () => {

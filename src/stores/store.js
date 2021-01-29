@@ -4,6 +4,13 @@ import StateMixin from 'reflux-state-mixin';
 import toNS from 'mongodb-ns';
 import { addLayer, generateGeoQuery } from 'modules/geo';
 import createSchemaAnalysis from '../modules/schema-analysis';
+import {
+  ANALYSIS_STATE_ANALYZING,
+  ANALYSIS_STATE_COMPLETE,
+  ANALYSIS_STATE_ERROR,
+  ANALYSIS_STATE_INITIAL,
+  ANALYSIS_STATE_TIMEOUT
+} from '../constants/analysis-states';
 
 const debug = require('debug')('mongodb-compass:stores:schema');
 
@@ -19,9 +26,9 @@ function getErrorState(err) {
   let analysisState;
 
   if (errorCode === ERROR_CODE_MAX_TIME_MS_EXPIRED) {
-    analysisState = 'timeout';
+    analysisState = ANALYSIS_STATE_TIMEOUT;
   } else {
-    analysisState = 'error';
+    analysisState = ANALYSIS_STATE_ERROR;
   }
 
   return { analysisState, errorMessage };
@@ -127,7 +134,7 @@ const configureStore = (options = {}) => {
       return {
         localAppRegistry: null,
         globalAppRegistry: null,
-        analysisState: 'initial',
+        analysisState: ANALYSIS_STATE_INITIAL,
         errorMessage: '',
         schema: null,
         outdated: false
@@ -140,7 +147,7 @@ const configureStore = (options = {}) => {
       this.query.project = state.project;
       this.query.maxTimeMS = state.maxTimeMS;
 
-      if (this.state.analysisState === 'complete') {
+      if (this.state.analysisState === ANALYSIS_STATE_COMPLETE) {
         this.setState({
           outdated: true
         });
@@ -227,7 +234,7 @@ const configureStore = (options = {}) => {
         debug('analysis started');
 
         this.setState({
-          analysisState: 'analyzing',
+          analysisState: ANALYSIS_STATE_ANALYZING,
           errorMessage: '',
           outdated: false,
           schema: null
@@ -236,7 +243,9 @@ const configureStore = (options = {}) => {
         const schema = await schemaAnalysis.getResult();
 
         this.setState({
-          analysisState: schema ? 'complete' : 'initial',
+          analysisState: schema ?
+            ANALYSIS_STATE_COMPLETE :
+            ANALYSIS_STATE_INITIAL,
           schema: schema
         });
 

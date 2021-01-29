@@ -12,6 +12,13 @@ import classnames from 'classnames';
 
 import styles from './compass-schema.less';
 import SchemaSteps from '../steps/steps';
+import {
+  ANALYSIS_STATE_INITIAL,
+  ANALYSIS_STATE_ANALYZING,
+  ANALYSIS_STATE_ERROR,
+  ANALYSIS_STATE_COMPLETE,
+  ANALYSIS_STATE_TIMEOUT
+} from '../../constants/analysis-states';
 
 const ERROR_WARNING = 'An error occurred during schema analysis';
 const OUTDATED_WARNING = 'The schema content is outdated and no longer in sync'
@@ -38,11 +45,11 @@ class Schema extends Component {
     actions: PropTypes.object,
     store: PropTypes.object.isRequired,
     analysisState: PropTypes.oneOf([
-      'initial',
-      'analyzing',
-      'error',
-      'complete',
-      'timeout'
+      ANALYSIS_STATE_INITIAL,
+      ANALYSIS_STATE_ANALYZING,
+      ANALYSIS_STATE_ERROR,
+      ANALYSIS_STATE_COMPLETE,
+      ANALYSIS_STATE_TIMEOUT
     ]),
     outdated: PropTypes.bool,
     errorMessage: PropTypes.string,
@@ -91,15 +98,15 @@ class Schema extends Component {
   renderBanner() {
     const analysisState = this.props.analysisState;
 
-    if (analysisState === 'error') {
+    if (analysisState === ANALYSIS_STATE_ERROR) {
       return <StatusRow style="error">{ERROR_WARNING}: {this.props.errorMessage}</StatusRow>;
     }
 
-    if (analysisState === 'timeout') {
+    if (analysisState === ANALYSIS_STATE_TIMEOUT) {
       return <StatusRow style="warning">{INCREASE_MAX_TIME_MS_HINT}</StatusRow>;
     }
 
-    if (analysisState === 'complete') {
+    if (analysisState === ANALYSIS_STATE_COMPLETE) {
       return (
         this.props.outdated ?
           <StatusRow style="warning">{OUTDATED_WARNING}</StatusRow> :
@@ -113,7 +120,7 @@ class Schema extends Component {
   }
 
   renderFieldList() {
-    if (this.props.analysisState !== 'complete') {
+    if (this.props.analysisState !== ANALYSIS_STATE_COMPLETE) {
       return;
     }
 
@@ -166,14 +173,14 @@ class Schema extends Component {
    * @returns {React.Component} Zero state or fields.
    */
   renderContent() {
-    if (this.props.analysisState === 'initial') {
+    if (this.props.analysisState === ANALYSIS_STATE_INITIAL) {
       return (
         this.renderInitialScreen()
       );
     }
 
     if (
-      this.props.analysisState === 'analyzing'
+      this.props.analysisState === ANALYSIS_STATE_ANALYZING
     ) {
       return (
         this.renderStepsScreen()

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { ANALYSIS_STATE_ANALYZING } from '../../constants/analysis-states';
 
 /**
  * Component for the entire document list.
@@ -17,7 +18,7 @@ class SchemaSteps extends Component {
   }
 
   renderStopButton() {
-    if (this.props.analysisState !== 'analyzing') {
+    if (this.props.analysisState !== ANALYSIS_STATE_ANALYZING) {
       return;
     }
 
